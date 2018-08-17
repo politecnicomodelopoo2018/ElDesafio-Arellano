@@ -28,11 +28,11 @@ class Usuario (object):
         self.apellido = apellido
 
     def deserializar(self, dict):
-        self.mail = dict["mail"]
-        self.fechaCreacion = dict["fechaCreacion"]
-        self.apellido = dict["apellido"]
-        self.nombre = dict["nombre"]
-        self.nickName = dict["nickName"]
+        self.setMail(dict["mail"])
+        self.setFechaCreacion(dict["fechaCreacion"])
+        self.setApellido(dict["apellido"])
+        self.setNombre(dict["nombre"])
+        self.setNickName(dict["nickName"])
 
     def insertate(self):
         cur = DB().run("INSERT into usuario VALUES (NULL, '%s', '%s', '%s', '%s', '%s')"

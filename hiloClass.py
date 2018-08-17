@@ -23,10 +23,10 @@ class Hilo(object):
         self.propietario = propietario
 
     def deserializar(self, dict):
-        self.fechaCreacion = dict["fechaCreacion"]
-        self.titulo = dict["titulo"]
-        self.descripcion = dict["descripcion"]
-        self.propietario = Usuario.getUsuario(dict["usuario_idusuario"])
+        self.setFechaCreacion(dict["fechaCreacion"])
+        self.setTitulo(dict["titulo"])
+        self.setDescripcion(dict["descripcion"])
+        self.setPropietario(Usuario.getUsuario(dict["usuario_idusuario"]))
 
     def insertate(self):
         cur = DB().run("INSERT INTO hilo VALUES (NULL, %i, '%s', '%s', '%s')"
@@ -39,3 +39,28 @@ class Hilo(object):
     def eliminate(self):
         DB().run("DELETE FROM hilo WHERE idhilo = %i" %self.id)
 
+    @staticmethod
+    def getHilo(id):
+        hilo = Hilo()
+        cur = DB().run("SELECT * FROM hilo WHERE idhilo = %i" %id)
+        dict = cur.fetchone()
+        hilo.deserializar(dict)
+        return hilo
+
+    @staticmethod
+    def getAllHilos():
+        cur = DB().run("SELECT * FROM hilo")
+        listaDict = cur.fetchall()
+        listaHilos = []
+        for item in listaDict:
+            listaHilos.append(Hilo.getHilo(item["id"]))
+        return listaHilos
+
+    @staticmethod
+    def getPostsHilo(id):
+        cur = DB().run("SELECT * FROM post WHERE hilo_idhilo = %i" %id)
+        listaDict = cur.fetchall()
+        listaPosts = []
+        for item in listaDict:
+            listaPosts.append(Post.getPost(item["id"]))
+        return listaPosts
