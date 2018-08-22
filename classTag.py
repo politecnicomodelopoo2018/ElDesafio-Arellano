@@ -1,4 +1,4 @@
-from classDB import *
+from classPost import *
 
 class Tag(object):
     id = None
@@ -24,5 +24,29 @@ class Tag(object):
     def eliminate(self):
         DB().run("DELETE FROM tag WHERE idtag = %i" %self.id)
 
+    @staticmethod
+    def getTag(id):
+        tag = Tag()
+        cur = DB().run("SELECT * FROM tag WHERE idtag = %i" %id)
+        dict = cur.fetchone()
+        tag.getTag(dict["idtag"])
+        return tag
 
+    @staticmethod
+    def getAllTag():
+        cur = DB().run("SELECT * FROM tag")
+        listaDict = cur.fetchall()
+        listaTags = []
+        for item in listaDict:
+            listaTags.append(Tag.getTag(item["idtag"]))
+        return listaTags
+
+    @staticmethod
+    def getPostsTag(id):
+        cur = DB().run("SELECT * FROM tag_has_post WHERE tag_idtag = %i" %id)
+        listaDict = cur.fetchall()
+        listaPosts = []
+        for item in listaDict:
+            listaPosts.append(Post.getPost(item["idpost"]))
+        return listaPosts
 

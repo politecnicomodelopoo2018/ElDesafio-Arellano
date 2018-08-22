@@ -1,4 +1,5 @@
 from classUsuario import *
+from classPost import *
 
 class Hilo(object):
     id = None
@@ -33,6 +34,7 @@ class Hilo(object):
         cur = DB().run("INSERT INTO hilo VALUES (NULL, %i, '%s', '%s', '%s')"
                        % (self.propietario.id, self.fechaCreacion, self.titulo, self.descripcion))
         self.setId(cur.lastrowid)
+
     def actualizate(self):
         DB().run("UPDATE hilo SET fechaCreacion = '%s', titulo = '%s', descripcion = '%s', usuario_idusuario = %i WHERE idhilo = %i"
                  % (self.fechaCreacion, self.titulo, self.descripcion,self.propietario.id, self.id))
@@ -65,3 +67,4 @@ class Hilo(object):
         for item in listaDict:
             listaPosts.append(Post.getPost(item["idpost"]))
         return listaPosts
+

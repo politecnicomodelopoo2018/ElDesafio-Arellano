@@ -1,4 +1,3 @@
-from classUsuario import *
 from classPost import *
 
 class Comentario(object):
