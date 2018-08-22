@@ -51,4 +51,13 @@ class Post(object):
             listaPosts.append(Post.getPost(item["idpost"]))
         return listaPosts
 
+    @staticmethod
+    def getTagsPost(id):
+        cur = DB().run("SELECT * FROM tag_has_post WHERE post_idpost = %i" %id)
+        listaDict = cur.fetchall()
+        listaTags = []
+        for item in listaDict:
+            listaTags.append(Tag.getTag(item["idtag"]))
+        return listaTags
+
 
