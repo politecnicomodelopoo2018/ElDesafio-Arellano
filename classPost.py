@@ -34,6 +34,19 @@ class Post(object):
                        % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo))
         self.setId(cur.lastrowid)
 
+    def actualizate(self):
+        DB().run("UPDATE post SET hilo_idhilo = %i, fechaCreacion = '%s', titulo = '%s', cuerpo = '%s' WHERE idpost = %i"
+                 % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo, self.id))
+
+    def guardate(self):
+        if self.id == None:
+            self.insertate()
+        else:
+            self.actualizate()
+
+    def eliminate(self):
+        DB().run("DELETE FROM post WHERE idpost = %i" % self.id)
+
     @staticmethod
     def getPost(id):
         post = Post()

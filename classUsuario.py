@@ -44,6 +44,12 @@ class Usuario (object):
         DB().run("UPDATE usuario SET mail = '%s', fechaCreacion = '%s', nickName = '%s', nombre = '%s', apellido = '%s' WHERE id = %i"
                 % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.id))
 
+    def guardate(self):
+        if self.id is None:
+            self.insertate()
+        else:
+            self.actualizate()
+
     def eliminate(self):
         DB().run("DELETE FROM usuario WHERE idusuario = %i" %self.id)
 

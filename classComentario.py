@@ -38,6 +38,12 @@ class Comentario(object):
         DB().run("UPDATE comentario SET post_idpost = %i, usuario_idusuario = %i, fecha = '%s', cuerpo = '%s' WHERE idcomentario = %i"
                  %(self.post.id, self.usuario.id, self.fecha, self.cuerpo, self.id))
 
+    def guardate(self):
+        if self.id is None:
+            self.insertate()
+        else:
+            self.actualizate()
+
     def eliminate(self):
         DB().run("DELETE FROM comentario WHERE idcomentario = %i" %self.id)
 

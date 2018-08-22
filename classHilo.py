@@ -39,6 +39,12 @@ class Hilo(object):
         DB().run("UPDATE hilo SET fechaCreacion = '%s', titulo = '%s', descripcion = '%s', usuario_idusuario = %i WHERE idhilo = %i"
                  % (self.fechaCreacion, self.titulo, self.descripcion,self.propietario.id, self.id))
 
+    def guardate(self):
+        if self.id is None:
+            self.insertate()
+        else:
+            self.actualizate()
+
     def eliminate(self):
         DB().run("DELETE FROM hilo WHERE idhilo = %i" %self.id)
 

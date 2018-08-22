@@ -15,11 +15,17 @@ class Tag(object):
         self.setNombre(dict["nombre"])
 
     def insertate(self):
-        cur = DB().run("INSERT INTO tag VALUES(NULL, '%s')" %self.nombre)
+        cur = DB().run("INSERT INTO tag VALUES(NULL, '%s')" % self.nombre)
         self.setId(cur.lastrowid)
 
     def actualizate(self):
-        DB().run("UPADTE tag SET nombre = '%s'" %self.nombre)
+        DB().run("UPDATE tag SET nombre = '%s' WHERE idtag = %i" % (self.nombre, self.id))
+
+    def guardate(self):
+        if self.id is None:
+            self.insertate()
+        else:
+            self.actualizate()
 
     def eliminate(self):
         DB().run("DELETE FROM tag WHERE idtag = %i" %self.id)
