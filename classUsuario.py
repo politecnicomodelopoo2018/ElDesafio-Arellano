@@ -1,5 +1,5 @@
-from DBClass import *
-from hiloClass import *
+from classDB import *
+from classHilo import *
 
 class Usuario (object):
     id = None
@@ -28,6 +28,7 @@ class Usuario (object):
         self.apellido = apellido
 
     def deserializar(self, dict):
+        self.setId(dict["idusuario"])
         self.setMail(dict["mail"])
         self.setFechaCreacion(dict["fechaCreacion"])
         self.setApellido(dict["apellido"])
@@ -54,7 +55,8 @@ class Usuario (object):
         usuario.deserializar(dict)
         return usuario
 
-    def getAllUsuarios(self):
+    @staticmethod
+    def getAllUsuarios():
         cur = DB().run("SELECT * FROM usuario")
         listaDict = cur.fetchall()
         listaUsuarios = []
@@ -70,3 +72,21 @@ class Usuario (object):
         for item in listaDict:
             listaHilos.append(Hilo.getHilo(item["idhilo"]))
         return listaHilos
+
+    @staticmethod
+    def getSeguidoresUsuario(id):
+        cur = DB().run("SELECT idseguidor FROM usuario_has_usuario WHERE idusuarioseguido = %i" %id)
+        listaDict = cur.fetchall()
+        listaUsuarios = []
+        for item in listaDict:
+            listaUsuarios.append(Usuario.getUsuario(item["idseguidor"]))
+        return listaUsuarios
+
+    @staticmethod
+    def getComentariosUsuario(id):
+        cur = DB().run("SELECT * from comentario WHERE usuario_idusuario = %i" %id)
+        listaDict = cur.fetchall()
+        listaComentarios = []
+        for item in listaDict:
+            listaComentarios.append(Cometario.getComentario(item["idcomentario"]))
+        return listaComentarios

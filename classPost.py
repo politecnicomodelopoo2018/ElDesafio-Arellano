@@ -1,4 +1,4 @@
-from hiloClass import *
+from classHilo import *
 
 class Post(object):
     id = None
@@ -23,6 +23,7 @@ class Post(object):
         self.cuerpo = cuerpo
 
     def deserializar(self, dict):
+        self.setId(dict["idpost"])
         self.setTitulo(dict["titulo"])
         self.setFechaCreacion(dict["fechaCreacion"])
         self.setCuerpo(dict["cuerpo"])

@@ -1,4 +1,4 @@
-from usuarioClass import *
+from classUsuario import *
 
 class Hilo(object):
     id = None
@@ -23,6 +23,7 @@ class Hilo(object):
         self.propietario = propietario
 
     def deserializar(self, dict):
+        self.setId(dict["idhilo"])
         self.setFechaCreacion(dict["fechaCreacion"])
         self.setTitulo(dict["titulo"])
         self.setDescripcion(dict["descripcion"])
@@ -62,5 +63,5 @@ class Hilo(object):
         listaDict = cur.fetchall()
         listaPosts = []
         for item in listaDict:
-            listaPosts.append(Post.getPost(item["id"]))
+            listaPosts.append(Post.getPost(item["idpost"]))
         return listaPosts
