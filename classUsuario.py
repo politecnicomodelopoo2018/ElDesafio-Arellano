@@ -1,5 +1,9 @@
 from classDB import *
 from classHilo import *
+import hashlib
+from classComentario import *
+
+# HASH SHA256
 
 class Usuario (object):
     id = None
@@ -8,6 +12,7 @@ class Usuario (object):
     nickName = None
     nombre = None
     apellido = None
+    contraseña = None
 
     def setId(self, id):
         self.id = id
@@ -27,6 +32,9 @@ class Usuario (object):
     def setApellido(self, apellido):
         self.apellido = apellido
 
+    def setContraseña(self, contraseña):
+        self.contraseña = hashlib.sha256((contraseña).encode('utf-8')).hexdigest()
+
     def deserializar(self, dict):
         self.setId(dict["idusuario"])
         self.setMail(dict["mail"])
@@ -34,15 +42,16 @@ class Usuario (object):
         self.setApellido(dict["apellido"])
         self.setNombre(dict["nombre"])
         self.setNickName(dict["nickName"])
+        self.contraseña = (dict["contraseña"])
 
     def insertate(self):
-        cur = DB().run("INSERT into usuario VALUES (NULL, '%s', '%s', '%s', '%s', '%s')"
-                       % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido))
+        cur = DB().run("INSERT into usuario VALUES (NULL, '%s', '%s', '%s', '%s', '%s', '%s')"
+                       % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.contraseña))
         self.setId(cur.lastrowid)
 
     def actualizate(self):
-        DB().run("UPDATE usuario SET mail = '%s', fechaCreacion = '%s', nickName = '%s', nombre = '%s', apellido = '%s' WHERE id = %i"
-                % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.id))
+        DB().run("UPDATE usuario SET mail = '%s', fechaCreacion = '%s', nickName = '%s', nombre = '%s', apellido = '%s' contraseña= '%s' WHERE id = %i"
+                % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.contraseña, self.id))
 
     def guardate(self):
         if self.id is None:
@@ -57,6 +66,14 @@ class Usuario (object):
     def getUsuario(id):
         usuario = Usuario()
         cur = DB().run("SELECT * FROM usuario WHERE idusuario = %i" %id)
+        dict = cur.fetchone()
+        usuario.deserializar(dict)
+        return usuario
+
+    @staticmethod
+    def getUsuarioDesdeMail(mail):
+        usuario = Usuario()
+        cur = DB().run("SELECT * FROM usuario WHERE mail = '%s'" % mail)
         dict = cur.fetchone()
         usuario.deserializar(dict)
         return usuario
@@ -94,5 +111,5 @@ class Usuario (object):
         listaDict = cur.fetchall()
         listaComentarios = []
         for item in listaDict:
-            listaComentarios.append(Cometario.getComentario(item["idcomentario"]))
+            listaComentarios.append(Comentario.getComentario(item["idcomentario"]))
         return listaComentarios

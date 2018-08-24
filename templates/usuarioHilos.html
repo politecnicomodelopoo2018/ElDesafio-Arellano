@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hilos</title>
+</head>
+<body>
+    <a href="/crearHilo"><button>New Post</button></a>
+    {% for item in ListaHilos %}
+    <a href="/postsDeHilo?idpost=item.id">item.titulo</a>
+    {% endfor %}
+</body>
+</html>
