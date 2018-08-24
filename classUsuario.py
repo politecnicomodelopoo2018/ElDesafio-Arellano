@@ -1,5 +1,4 @@
 from classDB import *
-from classHilo import *
 import hashlib
 from classComentario import *
 

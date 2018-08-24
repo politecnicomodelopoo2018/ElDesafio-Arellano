@@ -52,7 +52,7 @@ def LoginAction():
 
 @app.route('/usuarioHilos')
 def UsuarioHilos():
-    return render_template("/usuarioHilos.html", usuario=Usuario.getUsuario(session['userid']), ListaHilos=Usuario.getHilosUsuario(session['userid']))
+    return render_template("/usuarioHilos.html", usuario=Usuario.getUsuario(session['userid']), ListaHilos=Hilo.hilosParaUsuario(session['userid']))
 
 @app.route('/crearHilo')
 def CrearHilo():
@@ -66,7 +66,7 @@ def CrearHiloAction():
     hilo.setFechaCreacion(date.today())
     hilo.setDescripcion(request.form.get("descripcion"))
     hilo.guardate()
-    return render_template("/usuarioHilos.html", usuario=Usuario.getUsuario(session['userid']), ListaHilos=Usuario.getHilosUsuario(session['userid']))
+    return UsuarioHilos()
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal

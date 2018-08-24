@@ -1,4 +1,4 @@
-from classUsuario import *
+from classDB import *
 from classPost import *
 
 class Hilo(object):
@@ -29,6 +29,7 @@ class Hilo(object):
         self.setTitulo(dict["titulo"])
         self.setDescripcion(dict["descripcion"])
         self.setPropietario(Usuario.getUsuario(dict["usuario_idusuario"]))
+
 
     def insertate(self):
         cur = DB().run("INSERT INTO hilo VALUES (NULL, %i, '%s', '%s', '%s')"
@@ -74,3 +75,6 @@ class Hilo(object):
             listaPosts.append(Post.getPost(item["idpost"]))
         return listaPosts
 
+    @staticmethod
+    def hilosParaUsuario(idusuario):
+        cur = DB().run("SELECT * FROM hilo WHERE usuario_idusuario = %i" % idusuario)
