@@ -5,9 +5,9 @@
     <title>Hilos</title>
 </head>
 <body>
-    <a href="/crearHilo"><button>New Post</button></a>
+    <a href="/crearHilo"><button>New Hilo</button></a>
     {% for item in ListaHilos %}
-    <a href="/postsDeHilo?idpost=item.id">item.titulo</a>
+    <a href="/postDeHilo?idhilo={{item.id}}">{{item.titulo}}</a>
     {% endfor %}
 </body>
 </html>

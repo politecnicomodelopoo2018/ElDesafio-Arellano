@@ -1,4 +1,5 @@
 from classDB import *
+from classUsuario import *
 from classPost import *
 
 class Hilo(object):
@@ -78,3 +79,8 @@ class Hilo(object):
     @staticmethod
     def hilosParaUsuario(idusuario):
         cur = DB().run("SELECT * FROM hilo WHERE usuario_idusuario = %i" % idusuario)
+        listaDict = cur.fetchall()
+        listaHilos = []
+        for item in listaDict:
+            listaHilos.append(Hilo.getHilo(item["idhilo"]))
+        return listaHilos

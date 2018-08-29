@@ -1,6 +1,6 @@
 from classDB import *
 import hashlib
-from classComentario import *
+
 
 # HASH SHA256
 
@@ -86,14 +86,14 @@ class Usuario (object):
             listaUsuarios.append(Usuario.getUsuario(item["idusuario"]))
         return listaUsuarios
 
-    @staticmethod
-    def getHilosUsuario(id):
-        cur = DB().run("SELECT * FROM hilo WHERE usuario_idusuario = %i" %id)
-        listaDict = cur.fetchall()
-        listaHilos = []
-        for item in listaDict:
-            listaHilos.append(Hilo.getHilo(item["idhilo"]))
-        return listaHilos
+    # @staticmethod
+    # def getHilosUsuario(id):
+    #     cur = DB().run("SELECT * FROM hilo WHERE usuario_idusuario = %i" %id)
+    #     listaDict = cur.fetchall()
+    #     listaHilos = []
+    #     for item in listaDict:
+    #         listaHilos.append(Hilo.getHilo(item["idhilo"]))
+    #     return listaHilos
 
     @staticmethod
     def getSeguidoresUsuario(id):

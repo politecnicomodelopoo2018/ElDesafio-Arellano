@@ -1,6 +1,7 @@
 
 from flask import *
-from classUsuario import *
+
+from classHilo import *
 from datetime import date
 DB().setConnection('127.0.0.1', 'root', 'alumno', 'ElDesafio')
 
@@ -67,6 +68,10 @@ def CrearHiloAction():
     hilo.setDescripcion(request.form.get("descripcion"))
     hilo.guardate()
     return UsuarioHilos()
+
+@app.route('/postDeHilo')
+def PostsDeHilo():
+    return render_template("/postDeHilo.html", usuario=Usuario.getUsuario(session['userid']), Hilo=Hilo.getHilo(int(request.args.get("idhilo"))))
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal
