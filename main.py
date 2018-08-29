@@ -71,7 +71,21 @@ def CrearHiloAction():
 
 @app.route('/postDeHilo')
 def PostsDeHilo():
-    return render_template("/postDeHilo.html", usuario=Usuario.getUsuario(session['userid']), Hilo=Hilo.getHilo(int(request.args.get("idhilo"))))
+    return render_template("/postDeHilo.html", usuario=Usuario.getUsuario(session['userid']), ListaPosts=Post.postsParaHilo(int(request.args.get("idhilo"))), Hilo=Hilo.getHilo(int(request.args.get("idhilo"))))
+
+@app.route('/crearPost')
+def CrearPost():
+    return render_template("/crearPost.html", Hilo=Hilo.getHilo(request.args.get("idhilo")))
+
+@app.route('/crearPostAction', methods=['GET', 'POST'])
+def CrearPostAction():
+    post = Post()
+    post.setFechaCreacion(date.today())
+    post.setTitulo(request.form.get("titulo"))
+    post.setCuerpo(None)
+    post.setHilo()
+
+
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal

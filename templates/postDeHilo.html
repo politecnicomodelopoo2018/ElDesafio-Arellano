@@ -5,6 +5,10 @@
     <title>El Desafio</title>
 </head>
 <body>
-jojo
+<a href="/crearPost?idhilo={{Hilo.id}}"><button>New Post</button></a>
+Posts en {{Hilo.titulo}}
+{% for item in ListaPosts %}
+<a href="/post?idpost={{item.id}}">{{item.titulo}}</a>
+{% endfor %}
 </body>
 </html>
