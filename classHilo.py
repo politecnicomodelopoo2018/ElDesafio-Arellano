@@ -1,6 +1,5 @@
 from classDB import *
 from classUsuario import *
-from classPost import *
 
 class Hilo(object):
     id = None
@@ -67,14 +66,14 @@ class Hilo(object):
             listaHilos.append(Hilo.getHilo(item["id"]))
         return listaHilos
 
-    @staticmethod
-    def getPostsHilo(id):
-        cur = DB().run("SELECT * FROM post WHERE hilo_idhilo = %i" %id)
-        listaDict = cur.fetchall()
-        listaPosts = []
-        for item in listaDict:
-            listaPosts.append(Post.getPost(item["idpost"]))
-        return listaPosts
+    # @staticmethod
+    # def getPostsHilo(id):
+    #     cur = DB().run("SELECT * FROM post WHERE hilo_idhilo = %i" %id)
+    #     listaDict = cur.fetchall()
+    #     listaPosts = []
+    #     for item in listaDict:
+    #         listaPosts.append(Post.getPost(item["idpost"]))
+    #     return listaPosts
 
     @staticmethod
     def hilosParaUsuario(idusuario):

@@ -6,8 +6,10 @@
 </head>
 <body>
 <a href="/crearPost?idhilo={{Hilo.id}}"><button>New Post</button></a>
+<br>
 Posts en {{Hilo.titulo}}
 {% for item in ListaPosts %}
+<br>
 <a href="/post?idpost={{item.id}}">{{item.titulo}}</a>
 {% endfor %}
 </body>

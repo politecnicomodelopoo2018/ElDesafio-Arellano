@@ -1,6 +1,6 @@
 
 from flask import *
-
+from classPost import *
 from classHilo import *
 from datetime import date
 DB().setConnection('127.0.0.1', 'root', 'alumno', 'ElDesafio')
@@ -92,9 +92,12 @@ def CrearPostAction():
     post.setTitulo(request.form.get("titulo"))
     post.setCuerpo(None)
     post.setHilo(Hilo.getHilo(int(request.form.get("idhilo"))))
-    return redirect("/")
+    post.guardate()
+    return redirect("/postDeHilo?idhilo=" + request.form.get("idhilo"))
 
-
+@app.route('/post')
+def Post():
+    return render_template("/post.html")
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal

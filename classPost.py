@@ -30,7 +30,7 @@ class Post(object):
         self.setHilo(Hilo.getHilo(dict["hilo_idhilo"]))
 
     def insertate(self):
-        cur = DB().run("INSERT INTO post VALES(NULL, %i, '%s', '%s', '%s')"
+        cur = DB().run("INSERT INTO post VALUES(NULL, %i, '%s', '%s', '%s')"
                        % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo))
         self.setId(cur.lastrowid)
 
