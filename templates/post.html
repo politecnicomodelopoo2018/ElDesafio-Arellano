@@ -5,6 +5,10 @@
     <title>{{Post.titulo}}</title>
 </head>
 <body>
-
+<h3>{{Post.titulo}}</h3>
+{{Post.cuerpo}}
+{% if usuario.id == dueño.id%}
+    <a href="/editarPost?idpost={{Post.id}}"><button>Editar</button></a>
+{% endif %}
 </body>
 </html>

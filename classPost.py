@@ -47,6 +47,11 @@ class Post(object):
     def eliminate(self):
         DB().run("DELETE FROM post WHERE idpost = %i" % self.id)
 
+    def getDueño(self):
+        cur = DB().run("SELECT GetIdDueñoDePost(%i) as idusuario" %self.id)
+        dict = cur.fetchone()
+        return Usuario.getUsuario(dict["idusuario"])
+
     @staticmethod
     def getPost(id):
         post = Post()

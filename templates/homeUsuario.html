@@ -8,5 +8,11 @@
 Hola {{usuario.nickName}}
 <a href="/usuarioHilos"><button>Tus Hilos</button></a>
 <a href="/logOut"><button>logOut</button></a>
+<br>
+<tr>
+    {% for post in listaPosts %}
+    <td><a href="/post?idpost={{post.id}}">{{post.titulo}}</a></td>
+    {% endfor %}
+</tr>
 </body>
 </html>

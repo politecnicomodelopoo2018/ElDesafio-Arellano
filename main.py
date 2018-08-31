@@ -12,12 +12,15 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route('/')
 def Index():
     if 'userid' in session:
-        return render_template("/homeUsuario.html", usuario=Usuario.getUsuario(session['userid']))
+        return render_template("/homeUsuario.html", usuario=Usuario.getUsuario(session['userid']),
+                               listaPosts=Post.getAllPosts())
     return render_template("/paginaPrincipal.html")
 
 
 @app.route('/logIn')
 def Login():
+    if 'userid' in session:
+        return redirect("/")
     return render_template("/logIn.html")
 
 
@@ -96,8 +99,23 @@ def CrearPostAction():
     return redirect("/postDeHilo?idhilo=" + request.form.get("idhilo"))
 
 @app.route('/post')
-def Post():
-    return render_template("/post.html")
+def cargarPost():
+    post = Post.getPost(int(request.args.get("idpost")))
+    return render_template("/post.html", Post= post, usuario=Usuario.getUsuario(session['userid']), dueño=post.getDueño())
+
+@app.route('/editarPost')
+def editarPost():
+    return render_template("/editarPost.html", Post=Post.getPost(int(request.args.get("idpost"))))
+
+@app.route('/editarPostAction', methods=['GET', 'POST'])
+def editarPostAction():
+
+    post = Post.getPost(int(request.form.get("idpost")))
+    if post.getDueño().id == Usuario.getUsuario(session["userid"]).id:
+        post.setCuerpo(request.form.get("cuerpo"))
+        post.setTitulo(request.form.get("titulo"))
+        post.guardate()
+    return redirect('/post?idpost=' + str(post.id))
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal
