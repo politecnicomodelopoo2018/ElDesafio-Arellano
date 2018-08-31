@@ -13,7 +13,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def Index():
     if 'userid' in session:
         return render_template("/homeUsuario.html", usuario=Usuario.getUsuario(session['userid']),
-                               listaPosts=Post.getAllPosts())
+                               listaHilos=Hilo.getAllHilos())
     return render_template("/paginaPrincipal.html")
 
 
@@ -41,7 +41,8 @@ def CrearHilo():
 
 @app.route('/postDeHilo')
 def PostsDeHilo():
-    return render_template("/postDeHilo.html", usuario=Usuario.getUsuario(session['userid']), ListaPosts=Post.postsParaHilo(int(request.args.get("idhilo"))), Hilo=Hilo.getHilo(int(request.args.get("idhilo"))))
+    hilo = Hilo.getHilo(int(request.args.get("idhilo")))
+    return render_template("/postDeHilo.html", usuario=Usuario.getUsuario(session['userid']), ListaPosts=Post.postsParaHilo(hilo.id), Hilo=hilo)
 
 
 @app.route('/crearPost')

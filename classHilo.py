@@ -63,7 +63,7 @@ class Hilo(object):
         listaDict = cur.fetchall()
         listaHilos = []
         for item in listaDict:
-            listaHilos.append(Hilo.getHilo(item["id"]))
+            listaHilos.append(Hilo.getHilo(item["idhilo"]))
         return listaHilos
 
     # @staticmethod

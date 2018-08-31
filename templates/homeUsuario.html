@@ -9,10 +9,16 @@ Hola {{usuario.nickName}}
 <a href="/usuarioHilos"><button>Tus Hilos</button></a>
 <a href="/logOut"><button>logOut</button></a>
 <br>
-<tr>
-    {% for post in listaPosts %}
-    <td><a href="/post?idpost={{post.id}}">{{post.titulo}}</a></td>
+<table>
+    <tr>
+        <th>Titulo</th>
+        <th>Autor</th>
+    </tr>
+    {% for hilo in listaHilos %}
+    <tr>
+        <td><a href="/postDeHilo?idhilo={{hilo.id}}">{{hilo.titulo}}</a></td>
+    </tr>
     {% endfor %}
-</tr>
+</table>
 </body>
 </html>

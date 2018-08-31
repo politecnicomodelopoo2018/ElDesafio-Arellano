@@ -5,7 +5,9 @@
     <title>El Desafio</title>
 </head>
 <body>
+{% if Hilo.propietario.id == usuario.id %}
 <a href="/crearPost?idhilo={{Hilo.id}}"><button>New Post</button></a>
+{% endif %}
 <br>
 Posts en {{Hilo.titulo}}
 {% for item in ListaPosts %}
