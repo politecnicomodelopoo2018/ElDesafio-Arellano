@@ -121,12 +121,12 @@ def editarPostAction():
 
 @app.route('/comentar')
 def comentar():
-    comentario = Comentario
+    comentario = Comentario()
     comentario.setFecha(date.today())
     comentario.setUsuario(Usuario.getUsuario(session["userid"]).id)
-    comentario.setPost(Post.getPost(request.args.get("idpost")))
+    comentario.setPost(Post.getPost(int(request.args.get("idpost"))))
     comentario.guardate()
-    redirect('/post?idpost=' + request.args.get("idpost"))
+    redirect('/post?idpost=' + int(request.args.get("idpost")))
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal
