@@ -134,7 +134,7 @@ def borrarComentario():
     comentario = Comentario.getComentario(int(request.args.get("idcomentario")))
     if comentario.usuario.id == session["userid"] or (comentario.post.getDueño()).id == session["userid"]:
         comentario.eliminate()
-    return redirect('/post?idpost=' + request.args.get("idpost")).
+    return redirect('/post?idpost=' + request.args.get("idpost"))
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal

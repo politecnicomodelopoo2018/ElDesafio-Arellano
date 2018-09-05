@@ -7,6 +7,7 @@
 <body>
     <a href="/crearHilo"><button>New Hilo</button></a>
     {% for item in ListaHilos %}
+    <br>
     <a href="/postDeHilo?idhilo={{item.id}}">{{item.titulo}}</a>
     {% endfor %}
 </body>
