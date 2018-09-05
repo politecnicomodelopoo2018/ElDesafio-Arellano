@@ -10,5 +10,15 @@
 {% if usuario.id == dueño.id%}
     <a href="/editarPost?idpost={{Post.id}}"><button>Editar</button></a>
 {% endif %}
+<br>
+Comentar
+<form action="/comentar?idpost={{Post.id}}">
+    <input type="text" name="comentario" placeholder="Comentar">
+    <input type="submit" value="Comentar">
+</form>
+{% for item in ListaComentarios%}
+<br>
+Comentario: {{item.cuerpo}}
+{% endfor %}
 </body>
 </html>

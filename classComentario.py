@@ -62,3 +62,13 @@ class Comentario(object):
         listaComentarios = []
         for item in listaDict:
             listaComentarios.append(Comentario.getComentario(item["idcomentario"]))
+        return listaComentarios
+
+    @staticmethod
+    def getComentariosParaPost(id):
+        cur = DB().run("SELECT * FROM comentario WHERE post_idpost = %i" %id)
+        listaDict = cur.fetchall()
+        listaComentarios = []
+        for item in listaDict:
+            listaComentarios.append(Comentario.getComentario(item["idComentario"]))
+        return listaComentarios

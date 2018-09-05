@@ -3,6 +3,7 @@ from flask import *
 from classPost import *
 from classHilo import *
 from datetime import date
+from classComentario import *
 DB().setConnection('127.0.0.1', 'root', 'alumno', 'ElDesafio')
 
 app = Flask(__name__, static_url_path='/static')
@@ -102,7 +103,7 @@ def CrearPostAction():
 @app.route('/post')
 def cargarPost():
     post = Post.getPost(int(request.args.get("idpost")))
-    return render_template("/post.html", Post= post, usuario=Usuario.getUsuario(session['userid']), dueño=post.getDueño())
+    return render_template("/post.html", Post= post, usuario=Usuario.getUsuario(session['userid']), dueño=post.getDueño(), listaComentarios=Comentario.getComentariosParaPost(post.id))
 
 @app.route('/editarPost')
 def editarPost():
@@ -117,6 +118,15 @@ def editarPostAction():
         post.setTitulo(request.form.get("titulo"))
         post.guardate()
     return redirect('/post?idpost=' + str(post.id))
+
+@app.route('/comentar')
+def comentar():
+    comentario = Comentario
+    comentario.setFecha(date.today())
+    comentario.setUsuario(Usuario.getUsuario(session["userid"]).id)
+    comentario.setPost(Post.getPost(request.args.get("idpost")))
+    comentario.guardate()
+    redirect('/post?idpost=' + request.args.get("idpost"))
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal
