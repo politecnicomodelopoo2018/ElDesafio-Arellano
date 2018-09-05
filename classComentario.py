@@ -70,5 +70,5 @@ class Comentario(object):
         listaDict = cur.fetchall()
         listaComentarios = []
         for item in listaDict:
-            listaComentarios.append(Comentario.getComentario(item["idComentario"]))
+            listaComentarios.append(Comentario.getComentario(item["idcomentario"]))
         return listaComentarios

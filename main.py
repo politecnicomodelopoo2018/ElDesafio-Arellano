@@ -1,7 +1,5 @@
 
 from flask import *
-from classPost import *
-from classHilo import *
 from datetime import date
 from classComentario import *
 DB().setConnection('127.0.0.1', 'root', 'alumno', 'ElDesafio')
@@ -103,6 +101,8 @@ def CrearPostAction():
 @app.route('/post')
 def cargarPost():
     post = Post.getPost(int(request.args.get("idpost")))
+    for item in Comentario.getComentariosParaPost(post.id):
+        print(item.cuerpo)
     return render_template("/post.html", Post= post, usuario=Usuario.getUsuario(session['userid']), dueño=post.getDueño(), listaComentarios=Comentario.getComentariosParaPost(post.id))
 
 @app.route('/editarPost')
@@ -119,14 +119,22 @@ def editarPostAction():
         post.guardate()
     return redirect('/post?idpost=' + str(post.id))
 
-@app.route('/comentar')
+@app.route('/comentar', methods=['GET', 'POST'])
 def comentar():
     comentario = Comentario()
     comentario.setFecha(date.today())
-    comentario.setUsuario(Usuario.getUsuario(session["userid"]).id)
-    comentario.setPost(Post.getPost(int(request.args.get("idpost"))))
+    comentario.setCuerpo(request.form.get('cuerpo'))
+    comentario.setUsuario(Usuario.getUsuario(session['userid']))
+    comentario.setPost(Post.getPost(int(request.form.get("idpost"))))
     comentario.guardate()
-    redirect('/post?idpost=' + int(request.args.get("idpost")))
+    return redirect('/post?idpost=' + request.form.get("idpost"))
+
+@app.route('/borrarComentario')
+def borrarComentario():
+    comentario = Comentario.getComentario(int(request.args.get("idcomentario")))
+    if comentario.usuario.id == session["userid"] or (comentario.post.getDueño()).id == session["userid"]:
+        comentario.eliminate()
+    return redirect('/post?idpost=' + request.args.get("idpost")).
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal

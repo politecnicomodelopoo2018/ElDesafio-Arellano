@@ -12,13 +12,17 @@
 {% endif %}
 <br>
 Comentar
-<form action="/comentar?idpost={{Post.id}}">
-    <input type="text" name="comentario" placeholder="Comentar">
+<form action="/comentar", method="post">
+    <input type="number" name="idpost" value={{Post.id}} hidden>
+    <input type="text" name="cuerpo" placeholder="Comentar">
     <input type="submit" value="Comentar">
 </form>
-{% for item in ListaComentarios%}
+{% for item in listaComentarios%}
 <br>
-Comentario: {{item.cuerpo}}
+Comentario: {{item.cuerpo}}<br>{{item.usuario.nickName}}
+
+<a href="/borrarComentario?idcomentario={{item.id}}&idpost={{Post.id}}"><button>Borrar</button></a>
+<br>
 {% endfor %}
 </body>
 </html>
