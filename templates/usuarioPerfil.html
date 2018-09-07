@@ -17,7 +17,7 @@ Se unió el {{usuario.fechaCreacion}}<br>
 Sus hilos
 {% for hilo in listaHilos%}
 <br>
-<td><a href="/postDeHilo?idhilo={{hilo.id}}">{{hilo.titulo}}</a></td>
+<a href="/postDeHilo?idhilo={{hilo.id}}">{{hilo.titulo}}</a>
 {% endfor %}
 <br>
 <a href="/editarPerfil"><button>Editar</button></a>

@@ -6,17 +6,20 @@
 </head>
 <body>
 <h3>{{Post.titulo}}</h3>
+<h4>By {{Post.getDueño().nickName}}</h4>
+{{Post.fechaCreacion}}<br>
 {{Post.cuerpo}}
 {% if usuario.id == dueño.id%}
     <a href="/editarPost?idpost={{Post.id}}"><button>Editar</button></a>
 {% endif %}
-<br>
+<br><br>
 Comentar
 <form action="/comentar", method="post">
     <input type="number" name="idpost" value={{Post.id}} hidden>
     <input type="text" name="cuerpo" placeholder="Comentar">
     <input type="submit" value="Comentar">
 </form>
+<br>Comentarios<br>
 {% for item in listaComentarios%}
 <br>
 Comentario: {{item.cuerpo}}<br>{{item.usuario.nickName}}

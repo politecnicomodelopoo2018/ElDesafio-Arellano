@@ -16,9 +16,10 @@ Hola {{usuario.nickName}}
         <th>Titulo</th>
         <th>Autor</th>
     </tr>
-    {% for hilo in listaHilos %}
+    {% for post in listaPosts %}
     <tr>
-        <td><a href="/postDeHilo?idhilo={{hilo.id}}">{{hilo.titulo}}</a></td>
+        <td><a href="/post?idpost={{post.id}}">{{post.titulo}}</a></td>
+        <td><a href="/usuarioPerfil?idusuario={{post.getDueño().id}}">{{post.getDueño().nickName}}</a></td>
     </tr>
     {% endfor %}
 </table>

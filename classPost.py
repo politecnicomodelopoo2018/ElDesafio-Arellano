@@ -6,6 +6,7 @@ class Post(object):
     fechaCreacion = None
     titulo = None
     cuerpo = None
+    likes = 0
 
     def setId(self, id):
         self.id = id
@@ -19,6 +20,9 @@ class Post(object):
     def setTitulo(self, titulo):
         self.titulo = titulo
 
+    def setLikes(self, likes):
+        self.likes = likes
+
     def setCuerpo(self, cuerpo):
         self.cuerpo = cuerpo
 
@@ -28,15 +32,16 @@ class Post(object):
         self.setFechaCreacion(dict["fechaCreacion"])
         self.setCuerpo(dict["cuerpo"])
         self.setHilo(Hilo.getHilo(dict["hilo_idhilo"]))
+        self.setLikes(dict["likes"])
 
     def insertate(self):
-        cur = DB().run("INSERT INTO post VALUES(NULL, %i, '%s', '%s', '%s')"
-                       % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo))
+        cur = DB().run("INSERT INTO post VALUES(NULL, %i, '%s', '%s', '%s', %i)"
+                       % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo, self.likes))
         self.setId(cur.lastrowid)
 
     def actualizate(self):
-        DB().run("UPDATE post SET hilo_idhilo = %i, fechaCreacion = '%s', titulo = '%s', cuerpo = '%s' WHERE idpost = %i"
-                 % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo, self.id))
+        DB().run("UPDATE post SET hilo_idhilo = %i, fechaCreacion = '%s', titulo = '%s', cuerpo = '%s', likes = %i WHERE idpost = %i"
+                 % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo, self.likes, self.id))
 
     def guardate(self):
         if self.id == None:
@@ -51,6 +56,12 @@ class Post(object):
         cur = DB().run("SELECT GetIdDueñoDePost(%i) as idusuario" %self.id)
         dict = cur.fetchone()
         return Usuario.getUsuario(dict["idusuario"])
+
+    def likear(self):
+        self.likes += 1
+
+    def desLikear(self):
+        self.likes += -1
 
     @staticmethod
     def getPost(id):

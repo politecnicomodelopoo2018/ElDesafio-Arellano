@@ -12,7 +12,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 def Index():
     if 'userid' in session:
         return render_template("/homeUsuario.html", usuario=Usuario.getUsuario(session['userid']),
-                               listaHilos=Hilo.getAllHilos())
+                               listaPosts=Post.getAllPosts())
     return render_template("/paginaPrincipal.html")
 
 
@@ -140,7 +140,7 @@ def borrarComentario():
 def usuarioPerfil():
     usuario = Usuario.getUsuario(int(request.args.get("idusuario")))
     sessionUser = Usuario.getUsuario(int(session["userid"]))
-    return render_template('/usuarioPerfil.html', usuario=usuario, listaHilos=Hilo.hilosParaUsuario(session['userid']), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
+    return render_template('/usuarioPerfil.html', usuario=usuario, listaHilos=Hilo.hilosParaUsuario(usuario.id), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
 
 @app.route('/editarPerfil')
 def editarPerfil():
