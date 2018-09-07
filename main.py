@@ -136,5 +136,38 @@ def borrarComentario():
         comentario.eliminate()
     return redirect('/post?idpost=' + request.args.get("idpost"))
 
+@app.route('/usuarioPerfil')
+def usuarioPerfil():
+    usuario = Usuario.getUsuario(int(request.args.get("idusuario")))
+    sessionUser = Usuario.getUsuario(int(session["userid"]))
+    return render_template('/usuarioPerfil.html', usuario=usuario, listaHilos=Hilo.hilosParaUsuario(session['userid']), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
+
+@app.route('/editarPerfil')
+def editarPerfil():
+    return render_template('editarPerfil.html', usuario=Usuario.getUsuario(session["userid"]))
+
+@app.route('/editarPerfilAction', methods=['GET', 'POST'])
+def editarPerfilAction():
+    usuario = Usuario.getUsuario(session["userid"])
+    usuario.setDescripcion(request.form.get("descripcion"))
+    usuario.setNickName(request.form.get("nickName"))
+    usuario.setMail(request.form.get("mail"))
+    usuario.guardate()
+    return redirect("/usuarioPerfil?idusuario=" + str(usuario.id))
+
+@app.route('/seguir')
+def seguir():
+    usuario = Usuario.getUsuario(session["userid"])
+    if not usuario.verificarSiSigue(int(request.args.get("idusuario"))):
+        usuario.seguirUsuario(int(request.args.get("idusuario")))
+    return redirect("/usuarioPerfil?idusuario=" + str(request.args.get("idusuario")))
+
+@app.route('/dejarDeSeguir')
+def dejarDeSeguir():
+    usuario = Usuario.getUsuario(session["userid"])
+    if usuario.verificarSiSigue(int(request.args.get("idusuario"))):
+        usuario.dejarDeSeguir(int(request.args.get("idusuario")))
+    return redirect("/usuarioPerfil?idusuario=" + str(request.args.get("idusuario")))
+
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal

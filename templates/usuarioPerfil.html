@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{usuario.nickName}}</title>
+</head>
+<body>
+<h2>{{usuario.nickName}}</h2>
+{% if estadoDeSeguir == 0 %}
+    <a href="/seguir?idusuario={{usuario.id}}"><button>Seguir</button></a><br>
+{% else %}
+    <a href="/dejarDeSeguir?idusuario={{usuario.id}}"><button>Dejar de Seguir</button></a><br>
+{% endif %}
+Se unió el {{usuario.fechaCreacion}}<br>
+{{usuario.descripcion}}
+<br><br>
+Sus hilos
+{% for hilo in listaHilos%}
+<br>
+<td><a href="/postDeHilo?idhilo={{hilo.id}}">{{hilo.titulo}}</a></td>
+{% endfor %}
+<br>
+<a href="/editarPerfil"><button>Editar</button></a>
+</body>
+</html>

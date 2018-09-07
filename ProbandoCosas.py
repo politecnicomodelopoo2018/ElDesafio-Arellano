@@ -11,5 +11,5 @@ from classHilo import *
 
 
 
-for item in Hilo.hilosParaUsuario(1):
-    print(item.id)
+dict = cur.fetchone()
+print(dict)
