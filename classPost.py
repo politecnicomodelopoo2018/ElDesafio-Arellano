@@ -32,16 +32,15 @@ class Post(object):
         self.setFechaCreacion(dict["fechaCreacion"])
         self.setCuerpo(dict["cuerpo"])
         self.setHilo(Hilo.getHilo(dict["hilo_idhilo"]))
-        self.setLikes(dict["likes"])
 
     def insertate(self):
-        cur = DB().run("INSERT INTO post VALUES(NULL, %i, '%s', '%s', '%s', %i)"
-                       % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo, self.likes))
+        cur = DB().run("INSERT INTO post VALUES(NULL, %i, '%s', '%s', '%s')"
+                       % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo))
         self.setId(cur.lastrowid)
 
     def actualizate(self):
-        DB().run("UPDATE post SET hilo_idhilo = %i, fechaCreacion = '%s', titulo = '%s', cuerpo = '%s', likes = %i WHERE idpost = %i"
-                 % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo, self.likes, self.id))
+        DB().run("UPDATE post SET hilo_idhilo = %i, fechaCreacion = '%s', titulo = '%s', cuerpo = '%s' WHERE idpost = %i"
+                 % (self.hilo.id, self.fechaCreacion, self.titulo, self.cuerpo, self.id))
 
     def guardate(self):
         if self.id == None:
@@ -57,11 +56,23 @@ class Post(object):
         dict = cur.fetchone()
         return Usuario.getUsuario(dict["idusuario"])
 
-    def likear(self):
-        self.likes += 1
+    def getLiked(self, Usuario):
+        DB().run("INSERT INTO arrivoto VALUES(%i, %i)" %(self.id, Usuario.id))
 
-    def desLikear(self):
-        self.likes += -1
+    def getUnliked(self, Usuario):
+        DB().run("DELETE FROM arrivoto WHERE post_idpost = %i and usuario_idusuario = %i" %(self.id, Usuario.id))
+
+    def verificarLike(self, Usuario):
+        cur = DB().run("SELECT * FROM arrivoto WHERE post_idpost = %i and usuario_idusuario = %i" %(self.id, Usuario.id))
+        dict = cur.fetchone()
+        if dict is None:
+            return 0
+        return 1
+
+    def cantLikes(self):
+        cur = DB().run("SELECT count(*) as numero FROM arrivoto WHERE post_idpost = %i" %self.id)
+        dict = cur.fetchone()
+        return dict["numero"]
 
     @staticmethod
     def getPost(id):

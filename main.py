@@ -100,10 +100,11 @@ def CrearPostAction():
 
 @app.route('/post')
 def cargarPost():
+    usuario = Usuario.getUsuario(session['userid'])
     post = Post.getPost(int(request.args.get("idpost")))
     for item in Comentario.getComentariosParaPost(post.id):
         print(item.cuerpo)
-    return render_template("/post.html", Post= post, usuario=Usuario.getUsuario(session['userid']), dueño=post.getDueño(), listaComentarios=Comentario.getComentariosParaPost(post.id))
+    return render_template("/post.html", Post=post, usuario=usuario, dueño=post.getDueño(), listaComentarios=Comentario.getComentariosParaPost(post.id), estadoLike=post.verificarLike(usuario), cantLikes=post.cantLikes())
 
 @app.route('/editarPost')
 def editarPost():
@@ -168,6 +169,24 @@ def dejarDeSeguir():
     if usuario.verificarSiSigue(int(request.args.get("idusuario"))):
         usuario.dejarDeSeguir(int(request.args.get("idusuario")))
     return redirect("/usuarioPerfil?idusuario=" + str(request.args.get("idusuario")))
+
+@app.route('/arrivoto')
+def arrivoto():
+    post = Post.getPost(int(request.args.get("idpost")))
+    usuario = Usuario.getUsuario(session["userid"])
+    if not post.verificarLike(usuario):
+        post.getLiked(usuario)
+    return redirect("/post?idpost=" + str(post.id))
+
+
+@app.route('/desarrivoto')
+def desarrivoto():
+    post = Post.getPost(int(request.args.get("idpost")))
+    usuario = Usuario.getUsuario(session["userid"])
+    if post.verificarLike(usuario):
+        post.getUnliked(usuario)
+    return redirect("/post?idpost=" + str(post.id))
+
 
 if __name__ == '__main__':  # para actualizar automaticamente la pagina sin tener que cerrarla
     app.run(debug=True)  # para correr la pagina se puede hacer en este caso "python3 PruebaFlask.py" en la terminal

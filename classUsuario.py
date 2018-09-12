@@ -79,6 +79,7 @@ class Usuario (object):
             return 0
         return 1
 
+
     @staticmethod
     def getUsuario(id):
         usuario = Usuario()

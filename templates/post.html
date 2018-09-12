@@ -12,13 +12,23 @@
 {% if usuario.id == dueño.id%}
     <a href="/editarPost?idpost={{Post.id}}"><button>Editar</button></a>
 {% endif %}
-<br><br>
+
+<!--Cambiar para like-->
+<br>
+{% if estadoLike == 0 %}
+    <a href="/arrivoto?idpost={{Post.id}}"><button>Like</button></a><br>
+{% else %}
+    <a href="/desarrivoto?idpost={{Post.id}}"><button>Unlike</button></a><br>
+{% endif %}
+<br>
+Likes: {{cantLikes}}<br>
 Comentar
 <form action="/comentar", method="post">
     <input type="number" name="idpost" value={{Post.id}} hidden>
     <input type="text" name="cuerpo" placeholder="Comentar">
     <input type="submit" value="Comentar">
 </form>
+
 <br>Comentarios<br>
 {% for item in listaComentarios%}
 <br>
