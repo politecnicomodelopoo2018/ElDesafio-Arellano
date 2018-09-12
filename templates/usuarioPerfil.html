@@ -6,6 +6,7 @@
 </head>
 <body>
 <h2>{{usuario.nickName}}</h2>
+<br><a href="/usuarioHilos?idusuario={{usuario.id}}"><button>Hilos</button></a><br>
 {% if estadoDeSeguir == 0 %}
     <a href="/seguir?idusuario={{usuario.id}}"><button>Seguir</button></a><br>
 {% else %}

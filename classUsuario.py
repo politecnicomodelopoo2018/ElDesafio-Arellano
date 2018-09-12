@@ -79,6 +79,13 @@ class Usuario (object):
             return 0
         return 1
 
+    def listaIdsSiguiendo(self):
+        cur = DB().run("SELECT idusuarioseguido from usuario_has_usuario WHERE idseguidor = %i" %self.id)
+        dict = cur.fetchall()
+        listaIds = []
+        for item in dict:
+            listaIds.append(item["idusuarioseguido"])
+        return listaIds
 
     @staticmethod
     def getUsuario(id):
@@ -131,3 +138,12 @@ class Usuario (object):
         for item in listaDict:
             listaComentarios.append(Comentario.getComentario(item["idcomentario"]))
         return listaComentarios
+
+    @staticmethod
+    def todasLasIdUsuarios():
+        cur = DB().run("SELECT idusuario FROM usuario")
+        listaDict = cur.fetchall()
+        listaIds = []
+        for item in listaDict:
+            listaIds.append(item["idusuario"])
+        return listaIds

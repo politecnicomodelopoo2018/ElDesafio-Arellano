@@ -11,10 +11,25 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 @app.route('/')
 def Index():
     if 'userid' in session:
-        return render_template("/homeUsuario.html", usuario=Usuario.getUsuario(session['userid']),
-                               listaPosts=Post.getAllPosts())
+        return redirect("/homeUsuario?filtro=predeterminado")
     return render_template("/paginaPrincipal.html")
 
+@app.route('/homeUsuario')
+def homeUsuario():
+    listaIds = []
+    usuario = Usuario.getUsuario(session['userid'])
+    if request.args.get("filtro") == "predeterminado":
+        listaIds=Usuario.todasLasIdUsuarios()
+        print(listaIds)
+    elif request.args.get("filtro") == "siguiendo":
+        listaIds=usuario.listaIdsSiguiendo()
+        print(listaIds)
+    print(listaIds)
+    return render_template("/homeUsuario.html", usuario=usuario, listaPosts=Post.postsDeUsuarios(listaIds))
+
+@app.route('/todosLosPosts')
+def todosLosPosts():
+    return render_template("/todosLosPosts.html", usuario=Usuario.getUsuario(session['userid']), listaPosts=Post.getAllPosts())
 
 @app.route('/logIn')
 def Login():
@@ -30,7 +45,7 @@ def LogIn():
 
 @app.route('/usuarioHilos')
 def UsuarioHilos():
-    return render_template("/usuarioHilos.html", usuario=Usuario.getUsuario(session['userid']), ListaHilos=Hilo.hilosParaUsuario(session['userid']))
+    return render_template("/usuarioHilos.html", usuario=Usuario.getUsuario(int(request.args.get("idusuario"))), ListaHilos=Hilo.hilosParaUsuario(session['userid']))
 
 
 @app.route('/crearHilo')

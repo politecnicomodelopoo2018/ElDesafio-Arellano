@@ -108,3 +108,13 @@ class Post(object):
         for item in listaDict:
             listaPosts.append(Post.getPost(item["idpost"]))
         return listaPosts
+
+    @staticmethod
+    def postsDeUsuarios(lista):
+        listaPosts = []
+        for item in lista:
+            cur = DB().run("SELECT * FROM post WHERE hilo_idhilo = (SELECT idhilo FROM hilo WHERE usuario_idusuario = (SELECT GetIdDueñoDePost(%i)))" %item)
+            dict = cur.fetchmany()
+            for post in dict:
+                listaPosts.append(Post.getPost(post["idpost"]))
+        return listaPosts
