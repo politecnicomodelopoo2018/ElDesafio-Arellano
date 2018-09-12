@@ -6,7 +6,6 @@ class Post(object):
     fechaCreacion = None
     titulo = None
     cuerpo = None
-    likes = 0
 
     def setId(self, id):
         self.id = id
@@ -19,9 +18,6 @@ class Post(object):
 
     def setTitulo(self, titulo):
         self.titulo = titulo
-
-    def setLikes(self, likes):
-        self.likes = likes
 
     def setCuerpo(self, cuerpo):
         self.cuerpo = cuerpo

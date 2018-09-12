@@ -99,7 +99,7 @@ def CrearHiloAction():
     hilo.setFechaCreacion(date.today())
     hilo.setDescripcion(request.form.get("descripcion"))
     hilo.guardate()
-    return redirect("/usuarioHilos")
+    return redirect("/usuarioHilos?idusuario=" + str(session['userid']))
 
 
 
