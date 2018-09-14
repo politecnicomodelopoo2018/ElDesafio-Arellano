@@ -3,13 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>{{Post.titulo}}</title>
+    <!-- Include external CSS. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
+
+    <!-- Include Editor style. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
 <form action="/editarPostAction", method="post">
     <input type="hidden" name="idpost" value="{{Post.id}}">
-    <input type="text" name="titulo" placeholder="Titulo" value="{{Post.titulo}}">
-    <input type="text" name="cuerpo" placeholder="Cuerpo" value="{{Post.cuerpo}}" >
+    <input type="text" name="titulo" value="{{Post.titulo}}">
+    <textarea id="cuerpo" name="cuerpo">{{Post.cuerpo}}</textarea>
+
     <input type="submit" value="Guardar">
 </form>
+
+
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+
+    <!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/js/froala_editor.pkgd.min.js"></script>
+
+    <!-- Initialize the editor. -->
+    <script> $(function() {  $('textarea#cuerpo').froalaEditor({
+    // Set custom buttons with separator between them.
+    toolbarButtons: ['undo', 'redo' , '|', 'bold', 'italic', 'color', 'underline', 'strikeThrough', 'subscript', 'superscript', 'outdent', 'indent', 'clearFormatting', 'insertTable', 'html'],
+    toolbarButtonsXS: ['undo', 'redo' , '-', 'bold', 'italic', 'underline']
+  })
+});
+</script>
+
+
 </body>
+
+
+<!-- Include JS file. -->
+<!-- <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.5/js/froala_editor.min.js'></script> -->
 </html>

@@ -9,11 +9,10 @@ SignUp
 <form action="/registrarUsuario" method="post">
     <input type="text" name="nombre" placeholder="Nombre"><br>
     <input type="text" name="apellido" placeholder="Apellido"><br>
-    <input type="text" name="nickName" placeholder="Nick"><br>
-    <input type="email" name="mail" placeholder="Email"><br>
-    <input type="password" name="contraseña" placeholder="Contraseña"><br>
+    <input type="text" name="nickName" placeholder="Nick" required><br>
+    <input type="email" name="mail" placeholder="Email" required><br>
+    <input type="password" name="contraseña" placeholder="Contraseña" pattern=".{4,}"   required title="Minimo 3 caracteres" required><br>
     <input type="submit" value="Registrarse">
 </form>
 </body>
 </html>
-

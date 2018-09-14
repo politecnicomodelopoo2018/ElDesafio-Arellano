@@ -5,10 +5,10 @@
     <title>{{Post.titulo}}</title>
 </head>
 <body>
-<h3>{{Post.titulo}}</h3>
+<h3>{{Post.titulo|safe}}</h3>
 <h4>By {{Post.getDueño().nickName}}</h4>
 {{Post.fechaCreacion}}<br>
-{{Post.cuerpo}}
+{{Post.cuerpo|safe }}
 {% if usuario.id == dueño.id%}
     <a href="/editarPost?idpost={{Post.id}}"><button>Editar</button></a>
 {% endif %}

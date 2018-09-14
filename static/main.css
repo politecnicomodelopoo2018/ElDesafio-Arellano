@@ -1,0 +1,13 @@
+nav.leftmenu {
+  left:0;
+  top:0;
+  height: 100%;
+  width: 15%;
+  position:fixed;
+  background-color: red;
+  overflow-y: scroll;
+}
+
+div.contenidoDerecha {
+  margin-left: 15%;
+}

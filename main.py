@@ -73,6 +73,8 @@ def Registrar():
     usuario.setNickName(request.form.get("nickName"))
     usuario.setApellido(request.form.get("apellido"))
     usuario.setContraseña(request.form.get("contraseña"))
+    if request.form.get("mail") == "" or request.form.get("nickName") == "" or len(request.form.get("contraseña")) < 4:
+        return redirect("/")
     usuario.guardate()
     return redirect("/")
 
