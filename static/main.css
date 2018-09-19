@@ -1,13 +1,67 @@
 nav.leftmenu {
+  position: relative;
   left:0;
   top:0;
   height: 100%;
   width: 15%;
   position:fixed;
-  background-color: red;
+  background-color: #B2DB74;
   overflow-y: scroll;
 }
 
+
 div.contenidoDerecha {
+  position: relative;
   margin-left: 15%;
+  width: 80%;
+}
+
+div.todo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color:  "red";
+}
+
+
+
+div.contenidoDerecha a {
+  position: relative;
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 20%
+}
+
+
+div.cosasDelMenu {
+  margin-left: 10px;
+}
+
+a {
+  width: 100px;
+}
+
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.button:hover{
+  background-color: #269924;
 }

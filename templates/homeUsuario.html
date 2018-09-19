@@ -4,17 +4,22 @@
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" href="../static/main.css">
+    <link rel="stylesheet" href="../static/normalize.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 </head>
+<style>
+body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
+</style>
 <body>
 
 <nav class="leftmenu">
-  Hola {{usuario.nickName}}
-  <a href="/logOut"><button>logOut</button></a><br>
-  <a href="/usuarioPerfil?idusuario={{usuario.id}}"><button>Tu Perfil</button></a><br>
-
-  <br>
-  <a href="/homeUsuario?filtro=predeterminado"><button>All</button></a>
-  <a href="/homeUsuario?filtro=siguiendo"><button>Siguiendo</button></a>
+    <div class="cosasDelMenu">
+        <h3 class="nombre-sitio"> Hola {{usuario.nickName}}</h3>
+        <a href="/logOut" class="button">logOut</a>
+        <a href="/usuarioPerfil?idusuario={{usuario.id}}" class="button">Tu Perfil</a>
+        <a href="/homeUsuario?filtro=predeterminado" class="button">All</a>
+        <a href="/homeUsuario?filtro=siguiendo" class="button">Siguiendo</a>
+    </div>
 </nav>
 
 <div class="contenidoDerecha">
