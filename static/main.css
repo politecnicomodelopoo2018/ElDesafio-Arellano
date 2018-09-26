@@ -6,7 +6,7 @@ nav.leftmenu {
   width: 15%;
   position:fixed;
   background-color: #B2DB74;
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 
@@ -24,8 +24,7 @@ div.todo {
 }
 
 
-
-div.contenidoDerecha a {
+a.contenidoDerecha{
   position: relative;
   background-color: #4CAF50;
   border: none;
@@ -39,6 +38,24 @@ div.contenidoDerecha a {
   cursor: pointer;
   width: 20%
 }
+
+
+#otro {
+  position: relative;
+  background-color: rgba(255,255,255,0.5);
+  border: none;
+  color: black;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width: 4px
+}
+
+
 
 
 div.cosasDelMenu {

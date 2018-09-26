@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../static/main.css">
     <link rel="stylesheet" href="../static/normalize.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
@@ -26,15 +27,17 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 
 <div class="contenidoDerecha">
-    <h2>{{usuario.nickName}}</h2>
-    <br><a href="/usuarioHilos?idusuario={{usuario.id}}" class="buttonContenidoDerecha">Hilos</a><br>
+    <h2>{{usuarioPerfil.nickName}}<a href="/editarPerfil" id="otro"><i class="fas fa-cogs"></i></a></h2>
     {% if estadoDeSeguir == 0 %}
-        <a href="/seguir?idusuario={{usuario.id}}" class="buttonContenidoDerecha">Seguir</a><br>
+        <a href="/seguir?idusuario={{usuarioPerfil.id}}">Seguir</a><br>
     {% else %}
-        <a href="/dejarDeSeguir?idusuario={{usuario.id}}" class="buttonContenidoDerecha">Dejar de Seguir</a><br>
+        <a href="/dejarDeSeguir?idusuario={{usuarioPerfil.id}}" class="buttonContenidoDerecha">Dejar de Seguir</a><br>
     {% endif %}
-    Se unió el {{usuario.fechaCreacion}}<br>
-    {{usuario.descripcion}}
+
+    <br><a href="/usuarioHilos?idusuario={{usuarioPerfil.id}}">Hilos</a><br>
+
+    Se unió el {{usuarioPerfil.fechaCreacion}}<br>
+    {{usuarioPerfil.descripcion}}
     <br><br>
     Sus hilos
     {% for hilo in listaHilos%}
@@ -42,7 +45,8 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <a href="/postDeHilo?idhilo={{hilo.id}}">{{hilo.titulo}}</a>
     {% endfor %}
     <br>
-    <a href="/editarPerfil" class="buttonContenidoDerecha">Editar</a>
+
+
 </div>
 </div>
 </body>

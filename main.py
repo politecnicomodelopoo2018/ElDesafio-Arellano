@@ -45,7 +45,7 @@ def LogIn():
 
 @app.route('/usuarioHilos')
 def UsuarioHilos():
-    return render_template("/usuarioHilos.html", usuario=Usuario.getUsuario(int(request.args.get("idusuario"))), ListaHilos=Hilo.hilosParaUsuario(session['userid']))
+    return render_template("/usuarioHilos.html", usuario=Usuario.getUsuario(session["userid"]), ListaHilos=Hilo.hilosParaUsuario(int(request.args.get("idusuario"))))
 
 
 @app.route('/crearHilo')
@@ -158,7 +158,7 @@ def borrarComentario():
 def usuarioPerfil():
     usuario = Usuario.getUsuario(int(request.args.get("idusuario")))
     sessionUser = Usuario.getUsuario(int(session["userid"]))
-    return render_template('/usuarioPerfil.html', usuario=usuario, listaHilos=Hilo.hilosParaUsuario(usuario.id), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
+    return render_template('/usuarioPerfil.html', usuarioPerfil=usuario, usuario=Usuario.getUsuario(session["userid"]), listaHilos=Hilo.hilosParaUsuario(usuario.id), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
 
 @app.route('/editarPerfil')
 def editarPerfil():

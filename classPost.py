@@ -109,8 +109,9 @@ class Post(object):
     def postsDeUsuarios(lista):
         listaPosts = []
         for item in lista:
-            cur = DB().run("SELECT * FROM post WHERE hilo_idhilo = (SELECT idhilo FROM hilo WHERE usuario_idusuario = (SELECT GetIdDueñoDePost(%i)))" %item)
-            dict = cur.fetchmany()
-            for post in dict:
+            print("temi " + str(item))
+            cur = DB().run("SELECT * FROM post WHERE hilo_idhilo IN (SELECT idhilo FROM hilo WHERE usuario_idusuario = %i)" %item)
+            for post in cur:
+                print(post["idpost"])
                 listaPosts.append(Post.getPost(post["idpost"]))
         return listaPosts
