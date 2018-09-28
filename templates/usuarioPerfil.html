@@ -27,13 +27,19 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 
 <div class="contenidoDerecha">
-    <h2>{{usuarioPerfil.nickName}}<a href="/editarPerfil" id="otro"><i class="fas fa-cogs"></i></a></h2>
-    {% if estadoDeSeguir == 0 %}
-        <a href="/seguir?idusuario={{usuarioPerfil.id}}">Seguir</a><br>
-    {% else %}
-        <a href="/dejarDeSeguir?idusuario={{usuarioPerfil.id}}" class="buttonContenidoDerecha">Dejar de Seguir</a><br>
-    {% endif %}
 
+    <h2>{{usuarioPerfil.nickName}}</h2>
+
+
+    {% if usuario.id == usuarioPerfil.id %}
+        <a href="/editarPerfil">EditarPerfil</a><br>
+    {% else %}
+        {% if estadoDeSeguir == 0 %}
+            <a href="/seguir?idusuario={{usuarioPerfil.id}}">Seguir</a><br>
+        {% else %}
+            <a href="/dejarDeSeguir?idusuario={{usuarioPerfil.id}}" class="buttonContenidoDerecha">Dejar de Seguir</a><br>
+        {% endif %}
+    {% endif %}
     <br><a href="/usuarioHilos?idusuario={{usuarioPerfil.id}}">Hilos</a><br>
 
     Se unió el {{usuarioPerfil.fechaCreacion}}<br>

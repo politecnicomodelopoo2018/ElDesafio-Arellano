@@ -14,18 +14,22 @@ def Index():
         return redirect("/homeUsuario?filtro=predeterminado")
     return render_template("/paginaPrincipal.html")
 
-@app.route('/homeUsuario')
+@app.route('/homeUsuario', methods=['GET', 'POST'])
 def homeUsuario():
     listaIds = []
     usuario = Usuario.getUsuario(session['userid'])
     if request.args.get("filtro") == "predeterminado":
         listaIds=Usuario.todasLasIdUsuarios()
         print(listaIds)
+        listaPosts = Post.postsDeUsuarios(listaIds)
     elif request.args.get("filtro") == "siguiendo":
         listaIds=usuario.listaIdsSiguiendo()
         print(listaIds)
+        listaPosts = Post.postsDeUsuarios(listaIds)
+    elif request.args.get("filtro") == "buscar":
+        listaPosts = Post.postsPorFiltro(request.form.get("buscarPor"), request.form.get("busqueda"))
     print(listaIds)
-    return render_template("/homeUsuario.html", usuario=usuario, listaPosts=Post.postsDeUsuarios(listaIds))
+    return render_template("/homeUsuario.html", usuario=usuario, listaPosts=listaPosts)
 
 @app.route('/todosLosPosts')
 def todosLosPosts():
@@ -176,6 +180,8 @@ def editarPerfilAction():
 @app.route('/seguir')
 def seguir():
     usuario = Usuario.getUsuario(session["userid"])
+    if usuario.id == int(request.args.get("idusuario")):
+        return redirect("/usuarioPerfil?idusuario=" + str(request.args.get("idusuario")))
     if not usuario.verificarSiSigue(int(request.args.get("idusuario"))):
         usuario.seguirUsuario(int(request.args.get("idusuario")))
     return redirect("/usuarioPerfil?idusuario=" + str(request.args.get("idusuario")))

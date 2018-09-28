@@ -112,6 +112,13 @@ class Post(object):
             print("temi " + str(item))
             cur = DB().run("SELECT * FROM post WHERE hilo_idhilo IN (SELECT idhilo FROM hilo WHERE usuario_idusuario = %i)" %item)
             for post in cur:
-                print(post["idpost"])
                 listaPosts.append(Post.getPost(post["idpost"]))
+        return listaPosts
+
+    @staticmethod
+    def postsPorFiltro(campo, texto):
+        listaPosts = []
+        cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%'".format(campo, texto))
+        for post in cur:
+            listaPosts.append(Post.getPost(post["idpost"]))
         return listaPosts

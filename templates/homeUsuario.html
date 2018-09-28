@@ -23,6 +23,15 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </nav>
 
 <div class="contenidoDerecha">
+  <form action="/homeUsuario?filtro=buscar" method="post">
+      <input type="text" name="busqueda" placeholder="Buscar">
+      <select name="buscarPor">
+          <option value="titulo">Nombre Post</option>
+          <option value="usuario">Usuario</option>
+      </select>
+      <input type="submit" value="Buscar">
+  </form>
+
   <table>
       <tr>
           <th>Titulo</th>
