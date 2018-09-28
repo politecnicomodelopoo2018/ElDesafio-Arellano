@@ -129,3 +129,6 @@ class Post(object):
             for post in cur:
                 listaPosts.append(Post.getPost(post["idpost"]))
             return listaPosts
+
+        # Hay que paginar
+        # La sentencia sql tiene que venir paginada
