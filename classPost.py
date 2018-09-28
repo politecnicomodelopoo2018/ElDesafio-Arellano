@@ -118,7 +118,14 @@ class Post(object):
     @staticmethod
     def postsPorFiltro(campo, texto):
         listaPosts = []
-        cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%'".format(campo, texto))
-        for post in cur:
-            listaPosts.append(Post.getPost(post["idpost"]))
-        return listaPosts
+
+        if campo == "Cuerpo":
+            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%'".format(campo, texto))
+            for post in cur:
+                listaPosts.append(Post.getPost(post["idpost"]))
+            return listaPosts
+        else:
+            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%'".format(campo, texto))
+            for post in cur:
+                listaPosts.append(Post.getPost(post["idpost"]))
+            return listaPosts
