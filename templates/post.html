@@ -54,7 +54,7 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
     <br>Comentarios<br>
     {% for item in listaComentarios%}
     <br>
-    Comentario: {{item.cuerpo}}<br>{{item.usuario.nickName}}
+    Comentario: {{item.cuerpo}}<br><a href="/usuarioPerfil?idUsuario={{item.usuario.id}}">{{item.usuario.nickName}}</a> {{item.fecha}}
 
     <a href="/borrarComentario?idcomentario={{item.id}}&idpost={{Post.id}}"><button>Borrar</button></a>
     <br>

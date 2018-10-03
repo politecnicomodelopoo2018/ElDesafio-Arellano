@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../static/main.css">
     <link rel="stylesheet" href="../static/normalize.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 </head>
 <style>
 body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
@@ -14,8 +15,7 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <nav class="leftmenu">
     <div class="cosasDelMenu">
-        <h3 class="nombre-sitio"> Hola {{usuario.nickName}}</h3>
-        <a href="/logOut" class="button">logOut</a>
+        <h3 class="nombre-sitio"> Hola {{usuario.nickName}} <a href="/logOut"><i class="fas fa-power-off"></i></a></h3>
         <a href="/usuarioPerfil?idusuario={{usuario.id}}" class="button">Tu Perfil</a>
         <a href="/homeUsuario?filtro=predeterminado" class="button">All</a>
         <a href="/homeUsuario?filtro=siguiendo" class="button">Siguiendo</a>
@@ -44,8 +44,9 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
       </tr>
       {% endfor %}
   </table>
-    <a href="/homeUsuario?filtro={{filtro}}&offset={{offset}}&move=-2">Anterior</a>
-    <a href="/homeUsuario?filtro={{filtro}}&offset={{offset}}&move=2">Siguiente</a>
+    <a href="/homeUsuario?filtro={{filtro}}&offset={{offset}}&move=-2"><i class="fas fa-angle-left"></i> Anterior</a>
+    <a href="/homeUsuario?filtro={{filtro}}&offset={{offset}}&move=2">Siguiente <i class="fas fa-angle-right"></i>
+</a>
 </div>
 </body>
 </html>
