@@ -14,22 +14,31 @@ def Index():
         return redirect("/homeUsuario?filtro=predeterminado")
     return render_template("/paginaPrincipal.html")
 
+
+# Aca hay que arreglar lo del offset
 @app.route('/homeUsuario', methods=['GET', 'POST'])
 def homeUsuario():
+    if 'offset' in request.args:
+        offset = int(request.args.get('offset')) + int(request.args.get('move'))
+    else:
+        offset = 0
     listaIds = []
+    listaPosts = []
     usuario = Usuario.getUsuario(session['userid'])
+    fil = request.args.get("filtro")
+    print(fil)
     if request.args.get("filtro") == "predeterminado":
         listaIds=Usuario.todasLasIdUsuarios()
-        print(listaIds)
-        listaPosts = Post.postsDeUsuarios(listaIds)
+        idsParaSQL = ', '.join(str(e) for e in listaIds)
+        listaPosts = Post.postsDeUsuarios(idsParaSQL, offset)
     elif request.args.get("filtro") == "siguiendo":
         listaIds=usuario.listaIdsSiguiendo()
-        print(listaIds)
-        listaPosts = Post.postsDeUsuarios(listaIds)
+        idsParaSQL = ', '.join(str(e) for e in listaIds)
+        listaPosts = Post.postsDeUsuarios(idsParaSQL, offset)
     elif request.args.get("filtro") == "buscar":
-        listaPosts = Post.postsPorFiltro(request.form.get("buscarPor"), request.form.get("busqueda"))
+        listaPosts = Post.postsPorFiltro(request.form.get("buscarPor"), request.form.get("busqueda"), offset)
     print(listaIds)
-    return render_template("/homeUsuario.html", usuario=usuario, listaPosts=listaPosts)
+    return render_template("/homeUsuario.html", usuario=usuario, listaPosts=listaPosts, offset=offset, filtro=fil)
 
 @app.route('/todosLosPosts')
 def todosLosPosts():

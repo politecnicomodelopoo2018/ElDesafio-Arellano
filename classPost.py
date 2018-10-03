@@ -106,26 +106,25 @@ class Post(object):
         return listaPosts
 
     @staticmethod
-    def postsDeUsuarios(lista):
+    def postsDeUsuarios(lista, offset):
         listaPosts = []
-        for item in lista:
-            print("temi " + str(item))
-            cur = DB().run("SELECT * FROM post WHERE hilo_idhilo IN (SELECT idhilo FROM hilo WHERE usuario_idusuario = %i)" %item)
-            for post in cur:
-                listaPosts.append(Post.getPost(post["idpost"]))
+        print(lista)
+        cur = DB().run("SELECT * FROM post WHERE hilo_idhilo IN (SELECT idhilo FROM hilo WHERE usuario_idusuario IN ({0})) LIMIT 2 offset {1}".format(lista, offset))
+        for post in cur:
+            listaPosts.append(Post.getPost(post["idpost"]))
         return listaPosts
 
     @staticmethod
-    def postsPorFiltro(campo, texto):
+    def postsPorFiltro(campo, texto, offset):
         listaPosts = []
 
         if campo == "Cuerpo":
-            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%'".format(campo, texto))
+            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%' LIMIT 2 offset {2}".format(campo, texto, offset))
             for post in cur:
                 listaPosts.append(Post.getPost(post["idpost"]))
             return listaPosts
         else:
-            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%'".format(campo, texto))
+            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%' LIMIT 2 offset {2}".format(campo, texto, offset))
             for post in cur:
                 listaPosts.append(Post.getPost(post["idpost"]))
             return listaPosts
