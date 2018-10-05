@@ -162,6 +162,20 @@ def CrearPostAction():
     post.guardate()
     return redirect("/postDeHilo?idhilo=" + request.form.get("idhilo"))
 
+
+@app.route('/cambiarContraseña')
+def cambiarContraseña():
+    return render_template('cambiarContraseña.html')
+
+@app.route('/cambiarContraseña2')
+def cambiarContraseña2():
+    # mandar mail
+    # generar codigoLoco
+    # meter codigoLoco en la tabla del usuario del mail
+    pass
+
+
+
 @app.route('/post')
 def cargarPost():
     if 'userid' in session:

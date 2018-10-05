@@ -13,6 +13,7 @@ class Usuario (object):
     apellido = None
     contraseña = None
     descripcion = None
+    codigoCambio = None
 
     def setId(self, id):
         self.id = id
@@ -38,6 +39,9 @@ class Usuario (object):
     def setDescripcion(self, descripcion):
         self.descripcion = descripcion
 
+    def setCodigoCambio(self, codigoCambio):
+        self.codigoCambio = codigoCambio
+
     def deserializar(self, dict):
         self.setId(dict["idusuario"])
         self.setMail(dict["mail"])
@@ -47,15 +51,16 @@ class Usuario (object):
         self.setNickName(dict["nickName"])
         self.contraseña = (dict["contraseña"])
         self.setDescripcion(dict["descripcion"])
+        self.setCodigoCambio(dict["codigoCambio"])
 
     def insertate(self):
-        cur = DB().run("INSERT into usuario VALUES (NULL, '%s', '%s', '%s', '%s', '%s', '%s', '%s')"
+        cur = DB().run("INSERT into usuario VALUES (NULL, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')"
                        % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.contraseña, self.descripcion))
-        self.setId(cur.lastrowid)
+        self.setId(cur.lastrowid, self.codigoCambio)
 
     def actualizate(self):
-        DB().run("UPDATE usuario SET mail = '%s', fechaCreacion = '%s', nickName = '%s', nombre = '%s', apellido = '%s', contraseña= '%s' , descripcion = '%s' WHERE idusuario = %i"
-                % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.contraseña, self.descripcion, self.id))
+        DB().run("UPDATE usuario SET mail = '%s', fechaCreacion = '%s', nickName = '%s', nombre = '%s', apellido = '%s', contraseña= '%s' , codigoCambio= '%s', descripcion = '%s' WHERE idusuario = %i"
+                % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.contraseña, self.codigoCambio, self.descripcion, self.id))
 
     def guardate(self):
         if self.id is None:
