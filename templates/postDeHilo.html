@@ -12,15 +12,23 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 </style>
 <body>
 
-<nav class="leftmenu">
-    <div class="cosasDelMenu">
-        <h3 class="nombre-sitio"> Hola {{usuario.nickName}}</h3>
-        <a href="/logOut" class="button">logOut</a>
-        <a href="/usuarioPerfil?idusuario={{usuario.id}}" class="button">Tu Perfil</a>
-        <a href="/homeUsuario?filtro=predeterminado" class="button">All</a>
-        <a href="/homeUsuario?filtro=siguiendo" class="button">Siguiendo</a>
-    </div>
-</nav>
+{% if usuario.id == -1 %}
+    <nav class="leftmenu">
+        <div class="cosasDelMenu">
+            <h3 class="nombre-sitio"><a href="/logIn">logIn</a> <a href="/signUp">signUp</a></h3>
+            <a href="/homeUsuario?filtro=predeterminado" class="button">Inicio</a>
+        </div>
+    </nav>
+{% else %}
+    <nav class="leftmenu">
+        <div class="cosasDelMenu">
+            <h3 class="nombre-sitio"> Hola {{usuario.nickName}} <a href="/logOut"><i class="fas fa-power-off"></i></a></h3>
+            <a href="/homeUsuario?filtro=predeterminado" class="button">Inicio</a>
+            <a href="/usuarioPerfil?idusuario={{usuario.id}}" class="button">Tu Perfil</a>
+            <a href="/homeUsuario?filtro=siguiendo" class="button">Siguiendo</a>
+        </div>
+    </nav>
+{% endif %}
 
 
 <div class="contenidoDerecha">

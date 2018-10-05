@@ -7,12 +7,21 @@ DB().setConnection('127.0.0.1', 'root', 'alumno', 'ElDesafio')
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
+anonimo = Usuario()
+anonimo.setNickName("Anonimo")
+anonimo.setId(-1)
+
+usuarioSession = Usuario()
 
 @app.route('/')
 def Index():
-    if 'userid' in session:
-        return redirect("/homeUsuario?filtro=predeterminado")
-    return render_template("/paginaPrincipal.html")
+    return redirect("/homeUsuario?filtro=predeterminado")
+
+
+@app.route('/probando')
+def probando():
+    return render_template("probando.html")
+
 
 
 # Aca hay que arreglar lo del offset
@@ -24,7 +33,10 @@ def homeUsuario():
         offset = 0
     listaIds = []
     listaPosts = []
-    usuario = Usuario.getUsuario(session['userid'])
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
     fil = request.args.get("filtro")
     print(fil)
     if request.args.get("filtro") == "predeterminado":
@@ -42,7 +54,11 @@ def homeUsuario():
 
 @app.route('/todosLosPosts')
 def todosLosPosts():
-    return render_template("/todosLosPosts.html", usuario=Usuario.getUsuario(session['userid']), listaPosts=Post.getAllPosts())
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    return render_template("/todosLosPosts.html", usuario=usuario, listaPosts=Post.getAllPosts())
 
 @app.route('/logIn')
 def Login():
@@ -58,18 +74,30 @@ def LogIn():
 
 @app.route('/usuarioHilos')
 def UsuarioHilos():
-    return render_template("/usuarioHilos.html", usuario=Usuario.getUsuario(session["userid"]), ListaHilos=Hilo.hilosParaUsuario(int(request.args.get("idusuario"))))
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    return render_template("/usuarioHilos.html", usuario=usuario, ListaHilos=Hilo.hilosParaUsuario(int(request.args.get("idusuario"))))
 
 
 @app.route('/crearHilo')
 def CrearHilo():
-    return render_template("/crearHilo.html", usuario=Usuario.getUsuario(session['userid']))
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    return render_template("/crearHilo.html", usuario=usuario)
 
 
 @app.route('/postDeHilo')
 def PostsDeHilo():
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
     hilo = Hilo.getHilo(int(request.args.get("idhilo")))
-    return render_template("/postDeHilo.html", usuario=Usuario.getUsuario(session['userid']), ListaPosts=Post.postsParaHilo(hilo.id), Hilo=hilo)
+    return render_template("/postDeHilo.html", usuario=usuario, ListaPosts=Post.postsParaHilo(hilo.id), Hilo=hilo)
 
 
 @app.route('/crearPost')
@@ -130,7 +158,10 @@ def CrearPostAction():
 
 @app.route('/post')
 def cargarPost():
-    usuario = Usuario.getUsuario(session['userid'])
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
     post = Post.getPost(int(request.args.get("idpost")))
     for item in Comentario.getComentariosParaPost(post.id):
         print(item.cuerpo)
@@ -169,13 +200,21 @@ def borrarComentario():
 
 @app.route('/usuarioPerfil')
 def usuarioPerfil():
-    usuario = Usuario.getUsuario(int(request.args.get("idusuario")))
-    sessionUser = Usuario.getUsuario(int(session["userid"]))
-    return render_template('/usuarioPerfil.html', usuarioPerfil=usuario, usuario=Usuario.getUsuario(session["userid"]), listaHilos=Hilo.hilosParaUsuario(usuario.id), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    usuarioPerfil = Usuario.getUsuario(int(request.args.get("idusuario")))
+    sessionUser = usuario
+    return render_template('/usuarioPerfil.html', usuarioPerfil=usuarioPerfil, usuario=sessionUser, listaHilos=Hilo.hilosParaUsuario(usuario.id), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
 
 @app.route('/editarPerfil')
 def editarPerfil():
-    return render_template('editarPerfil.html', usuario=Usuario.getUsuario(session["userid"]))
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    return render_template('editarPerfil.html', usuario=usuario)
 
 @app.route('/editarPerfilAction', methods=['GET', 'POST'])
 def editarPerfilAction():

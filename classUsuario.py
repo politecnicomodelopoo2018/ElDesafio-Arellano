@@ -90,6 +90,8 @@ class Usuario (object):
     @staticmethod
     def getUsuario(id):
         usuario = Usuario()
+        if id == 0:
+            return
         cur = DB().run("SELECT * FROM usuario WHERE idusuario = %i" %id)
         dict = cur.fetchone()
         usuario.deserializar(dict)
