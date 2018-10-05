@@ -136,9 +136,15 @@ def logout():
 
 @app.route('/crearHiloAction', methods=['GET', 'POST'])
 def CrearHiloAction():
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    if usuario.id == -1:
+        return redirect("/logIn")
     hilo = Hilo()
     hilo.setTitulo(request.form.get("titulo"))
-    hilo.setPropietario(Usuario.getUsuario(session['userid']))
+    hilo.setPropietario(usuario)
     hilo.setFechaCreacion(date.today())
     hilo.setDescripcion(request.form.get("descripcion"))
     hilo.guardate()
@@ -183,16 +189,28 @@ def editarPostAction():
 
 @app.route('/comentar', methods=['GET', 'POST'])
 def comentar():
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    if usuario.id == -1:
+        return redirect("/logIn")
     comentario = Comentario()
     comentario.setFecha(date.today())
     comentario.setCuerpo(request.form.get('cuerpo'))
-    comentario.setUsuario(Usuario.getUsuario(session['userid']))
+    comentario.setUsuario(usuario)
     comentario.setPost(Post.getPost(int(request.form.get("idpost"))))
     comentario.guardate()
     return redirect('/post?idpost=' + request.form.get("idpost"))
 
 @app.route('/borrarComentario')
 def borrarComentario():
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    if usuario.id == -1:
+        return redirect("/logIn")
     comentario = Comentario.getComentario(int(request.args.get("idcomentario")))
     if comentario.usuario.id == session["userid"] or (comentario.post.getDueño()).id == session["userid"]:
         comentario.eliminate()
@@ -227,7 +245,12 @@ def editarPerfilAction():
 
 @app.route('/seguir')
 def seguir():
-    usuario = Usuario.getUsuario(session["userid"])
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    if usuario.id == -1:
+        return redirect("/logIn")
     if usuario.id == int(request.args.get("idusuario")):
         return redirect("/usuarioPerfil?idusuario=" + str(request.args.get("idusuario")))
     if not usuario.verificarSiSigue(int(request.args.get("idusuario"))):
@@ -236,15 +259,26 @@ def seguir():
 
 @app.route('/dejarDeSeguir')
 def dejarDeSeguir():
-    usuario = Usuario.getUsuario(session["userid"])
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    if usuario.id == -1:
+        return redirect("/logIn")
     if usuario.verificarSiSigue(int(request.args.get("idusuario"))):
         usuario.dejarDeSeguir(int(request.args.get("idusuario")))
     return redirect("/usuarioPerfil?idusuario=" + str(request.args.get("idusuario")))
 
 @app.route('/arrivoto')
 def arrivoto():
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    if usuario.id == -1:
+        return redirect("/logIn")
     post = Post.getPost(int(request.args.get("idpost")))
-    usuario = Usuario.getUsuario(session["userid"])
+
     if not post.verificarLike(usuario):
         post.getLiked(usuario)
     return redirect("/post?idpost=" + str(post.id))
@@ -252,8 +286,13 @@ def arrivoto():
 
 @app.route('/desarrivoto')
 def desarrivoto():
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    if usuario.id == -1:
+        return redirect("/logIn")
     post = Post.getPost(int(request.args.get("idpost")))
-    usuario = Usuario.getUsuario(session["userid"])
     if post.verificarLike(usuario):
         post.getUnliked(usuario)
     return redirect("/post?idpost=" + str(post.id))
