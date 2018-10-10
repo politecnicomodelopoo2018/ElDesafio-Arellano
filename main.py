@@ -2,10 +2,9 @@
 from flask import *
 from datetime import date
 from classComentario import *
-import smtplib
 
-server = smtplib.SMTP('smtp.gmail.com', 587)
-server.starttls()
+
+
 
 
 DB().setConnection('127.0.0.1', 'root', 'alumno', 'ElDesafio')
@@ -178,7 +177,7 @@ def cambiarContraseña():
 @app.route('/cambiarContraseñaAction', methods=['GET', 'POST'])
 def cambiarContraseñaAction():
     usuario = Usuario.getUsuarioDesdeMail(request.form.get("mail"))
-    usuario.mailRecuperarContraseña(server)
+    usuario.mailRecuperarContraseña()
     return redirect("/cambiarContraseña2?usuarioId=" + str(usuario.id))
 
 
@@ -188,11 +187,12 @@ def cambiarContraseña2():
     return render_template('cambiarContraseña2.html', usuario=usuario)
 
 
-@app.route('/cambiarContraseña2Action')
+@app.route('/cambiarContraseña2Action', methods=['GET', 'POST'])
 def cambiarContraseña2Action():
     usuario = Usuario.getUsuario(int(request.args.get("usuarioId")))
     if usuario.codigoCambio == request.form.get("codigo"):
         return redirect("/cambiarContraseña3?usuarioId=" + str(usuario.id))
+    return redirect("/")
 
 
 @app.route('/cambiarContraseña3')
@@ -201,7 +201,7 @@ def cambiarContraseña3():
     return render_template('cambiarContraseña3.html', usuario=usuario)
 
 
-@app.route('/cambiarContraseña3Action')
+@app.route('/cambiarContraseña3Action', methods=['GET', 'POST'])
 def cambiarContraseña3Action():
     usuario = Usuario.getUsuario(int(request.args.get("usuarioId")))
     usuario.setContraseña(request.form.get("contraseña"))

@@ -25,9 +25,10 @@ import smtplib
 
 
 server = smtplib.SMTP('smtp.gmail.com', 587)
+
+
 server.starttls()
 server.login("arellano.ariel290@gmail.com", "54337641")
-
-msg = "Esta prueba"
+msg = "Esta prueba" + "jaja"
 server.sendmail("arellano.ariel290@gmail.com", "krollarellano@gmail.com", msg)
 server.quit()

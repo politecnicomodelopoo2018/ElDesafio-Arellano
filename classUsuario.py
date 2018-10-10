@@ -1,5 +1,7 @@
 from classDB import *
 import hashlib
+import smtplib
+
 
 
 # HASH SHA256
@@ -92,11 +94,13 @@ class Usuario (object):
             listaIds.append(item["idusuarioseguido"])
         return listaIds
 
-    def mailRecuperarContraseña(self, server):
+    def mailRecuperarContraseña(self):
         self.setCodigoCambio("C0dT5t")# generarCodigoCambio()
         # enviarMailCodigoCambio()
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
         server.login("arellano.ariel290@gmail.com", "54337641")
-        msg = "El codigo de cambio es: " + self.codigoCambio
+        msg = "El codigo de cambio es: " + "C0dT5t" #self.codigoCambio
         server.sendmail("arellano.ariel290@gmail.com", self.mail, msg)
         server.quit()
 
