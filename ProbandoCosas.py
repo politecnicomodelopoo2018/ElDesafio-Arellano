@@ -14,10 +14,20 @@
 # dict = cur.fetchone()
 # print(dict)
 
-l = [1,5,2]
+# l = [1,5,2]
+# print(placeholders)
 
 
 
 
+import smtplib
 
-print(placeholders)
+
+
+server = smtplib.SMTP('smtp.gmail.com', 587)
+server.starttls()
+server.login("arellano.ariel290@gmail.com", "54337641")
+
+msg = "Esta prueba"
+server.sendmail("arellano.ariel290@gmail.com", "krollarellano@gmail.com", msg)
+server.quit()

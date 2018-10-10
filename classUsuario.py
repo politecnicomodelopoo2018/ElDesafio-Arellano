@@ -55,8 +55,8 @@ class Usuario (object):
 
     def insertate(self):
         cur = DB().run("INSERT into usuario VALUES (NULL, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s')"
-                       % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.contraseña, self.descripcion))
-        self.setId(cur.lastrowid, self.codigoCambio)
+                       % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.contraseña, self.descripcion, self.codigoCambio))
+        self.setId(cur.lastrowid)
 
     def actualizate(self):
         DB().run("UPDATE usuario SET mail = '%s', fechaCreacion = '%s', nickName = '%s', nombre = '%s', apellido = '%s', contraseña= '%s' , codigoCambio= '%s', descripcion = '%s' WHERE idusuario = %i"
@@ -91,6 +91,14 @@ class Usuario (object):
         for item in dict:
             listaIds.append(item["idusuarioseguido"])
         return listaIds
+
+    def mailRecuperarContraseña(self, server):
+        self.setCodigoCambio("C0dT5t")# generarCodigoCambio()
+        # enviarMailCodigoCambio()
+        server.login("arellano.ariel290@gmail.com", "54337641")
+        msg = "El codigo de cambio es: " + self.codigoCambio
+        server.sendmail("arellano.ariel290@gmail.com", self.mail, msg)
+        server.quit()
 
     @staticmethod
     def getUsuario(id):
