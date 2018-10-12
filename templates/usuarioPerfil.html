@@ -48,16 +48,10 @@ body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
         {% endif %}
     {% endif %}
     <br><a href="/usuarioHilos?idusuario={{usuarioPerfil.id}}">Hilos</a><br>
+    <br><a href="/crearPost?idusuario={{usuarioPerfil.id}}">Crear Post</a><br>
 
     Se unió el {{usuarioPerfil.fechaCreacion}}<br>
     {{usuarioPerfil.descripcion}}
-    <br><br>
-    Sus hilos
-    {% for hilo in listaHilos%}
-    <br>
-    <a href="/postDeHilo?idhilo={{hilo.id}}">{{hilo.titulo}}</a>
-    {% endfor %}
-    <br>
 
 
 </div>

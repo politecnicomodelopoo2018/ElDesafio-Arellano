@@ -18,6 +18,26 @@
 # print(placeholders)
 
 
+if 'userid' in session:
+    usuario = Usuario.getUsuario(session['userid'])
+
+
+
+@app.route('/logOut')
+def logout():
+   session.pop('userid', None)
+   return redirect("/")
+
+
+
+@app.route('/loginAction', methods=['GET', 'POST'])
+def LoginAction():
+    usuario = Usuario.getUsuarioDesdeMail(request.form.get("mail"))
+    if hashlib.sha256((request.form.get("contraseña")).encode('utf-8')).hexdigest() == usuario.contraseña:
+        session['userid'] = usuario.id
+    return redirect("/")
+
+
 
 
 import smtplib

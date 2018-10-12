@@ -282,7 +282,7 @@ def usuarioPerfil():
         usuario = anonimo
     usuarioPerfil = Usuario.getUsuario(int(request.args.get("idusuario")))
     sessionUser = usuario
-    return render_template('/usuarioPerfil.html', usuarioPerfil=usuarioPerfil, usuario=sessionUser, listaHilos=Hilo.hilosParaUsuario(usuario.id), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
+    return render_template('/usuarioPerfil.html', usuarioPerfil=usuarioPerfil, usuario=sessionUser, listaHilos=Hilo.hilosParaUsuario(usuarioPerfil.id), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
 
 
 @app.route('/editarPerfil')

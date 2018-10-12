@@ -62,7 +62,7 @@ class Usuario (object):
 
     def actualizate(self):
         DB().run("UPDATE usuario SET mail = '%s', fechaCreacion = '%s', nickName = '%s', nombre = '%s', apellido = '%s', contraseña= '%s' , codigoCambio= '%s', descripcion = '%s' WHERE idusuario = %i"
-                % (self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.contraseña, self.codigoCambio, self.descripcion, self.id))
+                %(self.mail, self.fechaCreacion, self.nickName, self.nombre, self.apellido, self.contraseña, self.codigoCambio, self.descripcion, self.id))
 
     def guardate(self):
         if self.id is None:
@@ -95,13 +95,24 @@ class Usuario (object):
         return listaIds
 
     def mailRecuperarContraseña(self):
-        self.setCodigoCambio("C0dT5t")# generarCodigoCambio()
+        import uuid
+        from email.mime.multipart import MIMEMultipart
+        from email.mime.text import MIMEText
+        self.setCodigoCambio(str(uuid.uuid4()))# generarCodigoCambio()
+        self.guardate()
         # enviarMailCodigoCambio()
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login("arellano.ariel290@gmail.com", "54337641")
-        msg = "El codigo de cambio es: " + "C0dT5t" #self.codigoCambio
-        server.sendmail("arellano.ariel290@gmail.com", self.mail, msg)
+
+        msg = MIMEMultipart()
+        msg['From'] = 'arellano.ariel290@gmail.com'
+        msg['To'] = self.mail
+        msg['Subject'] = 'Recuperación de Contraseña'
+        part1 = MIMEText("El codigo de cambio es: <b>" + self.codigoCambio + "</b>", 'html')
+        msg.attach(part1)
+
+        server.sendmail("arellano.ariel290@gmail.com", self.mail, msg.as_string())
         server.quit()
 
     @staticmethod
@@ -149,14 +160,14 @@ class Usuario (object):
             listaUsuarios.append(Usuario.getUsuario(item["idseguidor"]))
         return listaUsuarios
 
-    @staticmethod
-    def getComentariosUsuario(id):
-        cur = DB().run("SELECT * from comentario WHERE usuario_idusuario = %i" %id)
-        listaDict = cur.fetchall()
-        listaComentarios = []
-        for item in listaDict:
-            listaComentarios.append(Comentario.getComentario(item["idcomentario"]))
-        return listaComentarios
+    # @staticmethod
+    # def getComentariosUsuario(id):
+    #     cur = DB().run("SELECT * from comentario WHERE usuario_idusuario = %i" %id)
+    #     listaDict = cur.fetchall()
+    #     listaComentarios = []
+    #     for item in listaDict:
+    #         listaComentarios.append(Comentario.getComentario(item["idcomentario"]))
+    #     return listaComentarios
 
     @staticmethod
     def todasLasIdUsuarios():

@@ -5,6 +5,7 @@
     <title>cambiarContraseña2</title>
 </head>
 <body>
+{{usuario.codigoCambio}}
 <form action="/cambiarContraseña2Action?usuarioId={{usuario.id}}", method="post">
     <input type="text" name="codigo" placeholder="codigo">
     <input type="submit" value="Enviar">
