@@ -4,9 +4,6 @@ from datetime import date
 from classComentario import *
 
 
-
-
-
 DB().setConnection('127.0.0.1', 'root', 'alumno', 'ElDesafio')
 
 app = Flask(__name__, static_url_path='/static')
@@ -27,8 +24,6 @@ def Index():
 def probando():
     return render_template("probando.html")
 
-
-
 # Aca hay que arreglar lo del offset
 @app.route('/homeUsuario', methods=['GET', 'POST'])
 def homeUsuario():
@@ -36,6 +31,8 @@ def homeUsuario():
         offset = int(request.args.get('offset')) + int(request.args.get('move'))
     else:
         offset = 0
+    if offset < 0:
+        offset=0
     listaIds = []
     listaPosts = []
     if 'userid' in session:
@@ -107,7 +104,11 @@ def PostsDeHilo():
 
 @app.route('/crearPost')
 def CrearPost():
-    return render_template("/crearPost.html", Hilo=Hilo.getHilo(int(request.args.get("idhilo"))))
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    return render_template("/crearPost.html", listaHilos=Hilo.hilosParaUsuario(usuario.id))
 
 
 @app.route('/registrarUsuario', methods=['GET', 'POST'])
@@ -153,8 +154,18 @@ def CrearHiloAction():
     hilo.setFechaCreacion(date.today())
     hilo.setDescripcion(request.form.get("descripcion"))
     hilo.guardate()
-    return redirect("/usuarioHilos?idusuario=" + str(session['userid']))
+    return redirect("/crearPost")
 
+
+@app.route('/usuarioPerfil')
+def usuarioPerfil():
+    if 'userid' in session:
+        usuario = Usuario.getUsuario(session['userid'])
+    else:
+        usuario = anonimo
+    usuarioPerfil = Usuario.getUsuario(int(request.args.get("idusuario")))
+    sessionUser = usuario
+    return render_template('/usuarioPerfil.html', usuarioPerfil=usuarioPerfil, usuario=sessionUser, listaHilos=Hilo.hilosParaUsuario(usuarioPerfil.id), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
 
 
 @app.route('/crearPostAction', methods=['GET', 'POST'])
@@ -207,6 +218,7 @@ def cambiarContraseña3Action():
     usuario.setContraseña(request.form.get("contraseña"))
     usuario.guardate()
     return redirect('/')
+
 
 
 
@@ -272,17 +284,6 @@ def borrarComentario():
     if comentario.usuario.id == session["userid"] or (comentario.post.getDueño()).id == session["userid"]:
         comentario.eliminate()
     return redirect('/post?idpost=' + request.args.get("idpost"))
-
-
-@app.route('/usuarioPerfil')
-def usuarioPerfil():
-    if 'userid' in session:
-        usuario = Usuario.getUsuario(session['userid'])
-    else:
-        usuario = anonimo
-    usuarioPerfil = Usuario.getUsuario(int(request.args.get("idusuario")))
-    sessionUser = usuario
-    return render_template('/usuarioPerfil.html', usuarioPerfil=usuarioPerfil, usuario=sessionUser, listaHilos=Hilo.hilosParaUsuario(usuarioPerfil.id), estadoDeSeguir = sessionUser.verificarSiSigue(int(request.args.get("idusuario"))))
 
 
 @app.route('/editarPerfil')

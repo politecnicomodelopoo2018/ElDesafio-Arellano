@@ -7,15 +7,16 @@
 </head>
 <body>
 Crear Post
+<a href="crearHilo">Crear Hilo</a>
 <form action="/crearPostAction", method="post">
-    <input type="hidden" name="idhilo" value="{{Hilo.id}}"><br>
     <input type="text" name="titulo" placeholder="Titulo"><br>
-    <input type="submit" value="Crear">+
-    <select name="idHilo">
+    Hilo:
+    <select name="idhilo">
           {% for hilo in listaHilos %}
           <option value="{{hilo.id}}">{{hilo.titulo}}</option>
           {% endfor %}
-</select>
+    </select><br>
+    <input type="submit" value="Crear">
 </form>
 </body>
 </html>
