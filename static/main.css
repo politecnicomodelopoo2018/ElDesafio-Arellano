@@ -1,23 +1,23 @@
 nav.leftmenu {
-  position: relative;
+  position: absolute;
   left:0;
   top:0;
   height: 100%;
   width: 15%;
-  position:fixed;
   background-color: #B2DB74;
   overflow-y: hidden;
 }
 
 
 div.contenidoDerecha {
-  position: relative;
+  position: absolute;
   margin-left: 15%;
   width: 80%;
 }
 
 div.todo {
-  position: absolute;
+  position: relative;
+  margin: 0 auto;
   width: 100%;
   height: 100%;
   background-color:  "red";

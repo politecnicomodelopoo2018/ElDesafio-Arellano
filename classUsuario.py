@@ -92,6 +92,8 @@ class Usuario (object):
         listaIds = []
         for item in dict:
             listaIds.append(item["idusuarioseguido"])
+        if not listaIds:
+            listaIds.append(0)
         return listaIds
 
     def mailRecuperarContraseña(self):

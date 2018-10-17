@@ -27,6 +27,8 @@ def probando():
 # Aca hay que arreglar lo del offset
 @app.route('/homeUsuario', methods=['GET', 'POST'])
 def homeUsuario():
+    buscarPor = None
+    busqueda = None
     if 'offset' in request.args:
         offset = int(request.args.get('offset')) + int(request.args.get('move'))
     else:
@@ -50,9 +52,16 @@ def homeUsuario():
         idsParaSQL = ', '.join(str(e) for e in listaIds)
         listaPosts = Post.postsDeUsuarios(idsParaSQL, offset)
     elif request.args.get("filtro") == "buscar":
-        listaPosts = Post.postsPorFiltro(request.form.get("buscarPor"), request.form.get("busqueda"), offset)
+        if int(request.args.get("X")) == 0:
+            buscarPor = request.form.get("buscarPor")
+            busqueda = request.form.get("busqueda")
+            listaPosts = Post.postsPorFiltro(buscarPor, busqueda, offset)
+        elif int(request.args.get("X")) == 1:
+            buscarPor = request.args.get("buscarPor")
+            busqueda = request.args.get("busqueda")
+            listaPosts = Post.postsPorFiltro(buscarPor, busqueda, offset)
     print(listaIds)
-    return render_template("/homeUsuario.html", usuario=usuario, listaPosts=listaPosts, offset=offset, filtro=fil)
+    return render_template("/homeUsuario.html", usuario=usuario, listaPosts=listaPosts, offset=offset, filtro=fil, buscarPor=buscarPor, busqueda=busqueda)
 
 @app.route('/todosLosPosts')
 def todosLosPosts():
