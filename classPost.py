@@ -80,7 +80,7 @@ class Post(object):
 
     @staticmethod
     def getAllPosts():
-        cur = DB().run("SELECT * FROM post")
+        cur = DB().run("SELECT * FROM post order by (fechaCreacion) desc")
         listaDict = cur.fetchall()
         listaPosts = []
         for item in listaDict:
@@ -98,7 +98,7 @@ class Post(object):
 
     @staticmethod
     def postsParaHilo(id):
-        cur = DB().run("SELECT * FROM post WHERE hilo_idhilo=%i" %id)
+        cur = DB().run("SELECT * FROM post WHERE hilo_idhilo=%i order by (fechaCreacion) desc" %id)
         listaDict = cur.fetchall()
         listaPosts = []
         for item in listaDict:
@@ -109,25 +109,39 @@ class Post(object):
     def postsDeUsuarios(lista, offset):
         listaPosts = []
         print(lista)
-        cur = DB().run("SELECT * FROM post WHERE hilo_idhilo IN (SELECT idhilo FROM hilo WHERE usuario_idusuario IN ({0})) LIMIT 2 offset {1}".format(lista, offset))
+        cur = DB().run("SELECT * FROM post WHERE hilo_idhilo IN (SELECT idhilo FROM hilo WHERE usuario_idusuario IN ({0})) order by (fechaCreacion) desc LIMIT 2 offset {1} ".format(lista, offset))
         for post in cur:
             listaPosts.append(Post.getPost(post["idpost"]))
         return listaPosts
+
+    @staticmethod
+    def cantPosts(lista):
+        cur = DB().run("SELECT count(*) as cant FROM post WHERE hilo_idhilo IN (SELECT idhilo FROM hilo WHERE usuario_idusuario IN ({0}))".format(lista))
+        dict = cur.fetchone()
+        return int(dict["cant"])
 
     @staticmethod
     def postsPorFiltro(campo, texto, offset):
         listaPosts = []
 
         if campo == "Cuerpo":
-            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%' LIMIT 2 offset {2}".format(campo, texto, offset))
+            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%' order by (fechaCreacion) desc LIMIT 2 offset {2}".format(campo, texto, offset))
             for post in cur:
                 listaPosts.append(Post.getPost(post["idpost"]))
             return listaPosts
         else:
-            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%' LIMIT 2 offset {2}".format(campo, texto, offset))
+            cur = DB().run("SELECT * FROM post WHERE {0} LIKE '{1}%' order by (fechaCreacion) desc LIMIT 2 offset {2}".format(campo, texto, offset))
             for post in cur:
                 listaPosts.append(Post.getPost(post["idpost"]))
             return listaPosts
 
-        # Hay que paginar
-        # La sentencia sql tiene que venir paginada
+    @staticmethod
+    def cantPostPorFiltro(campo, texto):
+        if campo == "Cuerpo":
+            cur = DB().run("SELECT count(*) as cant FROM post WHERE {0} LIKE '{1}%'".format(campo, texto))
+            dict = cur.fetchone()
+            return int(dict["cant"])
+        else:
+            cur = DB().run("SELECT count(*) as cant FROM post WHERE {0} LIKE '{1}%'".format(campo, texto))
+            dict = cur.fetchone()
+            return int(dict["cant"])

@@ -29,7 +29,8 @@ def probando():
 def homeUsuario():
     buscarPor = None
     busqueda = None
-    if 'offset' in request.args:
+
+    if 'offset' in request.args and 'move' in request.args:
         offset = int(request.args.get('offset')) + int(request.args.get('move'))
     else:
         offset = 0
@@ -42,25 +43,35 @@ def homeUsuario():
     else:
         usuario = anonimo
     fil = request.args.get("filtro")
-    print(fil)
+
+    # fixeado aca
     if request.args.get("filtro") == "predeterminado":
         listaIds=Usuario.todasLasIdUsuarios()
         idsParaSQL = ', '.join(str(e) for e in listaIds)
+        if offset > Post.cantPosts(idsParaSQL):
+            offset = offset-2
         listaPosts = Post.postsDeUsuarios(idsParaSQL, offset)
+    # fixeado aca
     elif request.args.get("filtro") == "siguiendo":
         listaIds=usuario.listaIdsSiguiendo()
         idsParaSQL = ', '.join(str(e) for e in listaIds)
+        if offset > Post.cantPosts(idsParaSQL):
+            offset = offset-2
         listaPosts = Post.postsDeUsuarios(idsParaSQL, offset)
+
     elif request.args.get("filtro") == "buscar":
         if int(request.args.get("X")) == 0:
             buscarPor = request.form.get("buscarPor")
             busqueda = request.form.get("busqueda")
+            if offset > Post.cantPostPorFiltro(buscarPor, busqueda):
+                offset=offset-2
             listaPosts = Post.postsPorFiltro(buscarPor, busqueda, offset)
         elif int(request.args.get("X")) == 1:
             buscarPor = request.args.get("buscarPor")
             busqueda = request.args.get("busqueda")
+            if offset > Post.cantPostPorFiltro(buscarPor, busqueda):
+                offset=offset-2
             listaPosts = Post.postsPorFiltro(buscarPor, busqueda, offset)
-    print(listaIds)
     return render_template("/homeUsuario.html", usuario=usuario, listaPosts=listaPosts, offset=offset, filtro=fil, buscarPor=buscarPor, busqueda=busqueda)
 
 @app.route('/todosLosPosts')
@@ -117,7 +128,7 @@ def CrearPost():
         usuario = Usuario.getUsuario(session['userid'])
     else:
         usuario = anonimo
-    return render_template("/crearPost.html", listaHilos=Hilo.hilosParaUsuario(usuario.id))
+    return render_template("/crearPost.html", listaHilos=Hilo.hilosParaUsuario(usuario.id), usuario=usuario)
 
 
 @app.route('/registrarUsuario', methods=['GET', 'POST'])

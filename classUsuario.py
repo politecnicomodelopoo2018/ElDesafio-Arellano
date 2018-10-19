@@ -14,7 +14,7 @@ class Usuario (object):
     nombre = None
     apellido = None
     contraseña = None
-    descripcion = None
+    descripcion = ""
     codigoCambio = None
 
     def setId(self, id):

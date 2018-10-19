@@ -66,7 +66,7 @@ class Comentario(object):
 
     @staticmethod
     def getComentariosParaPost(id):
-        cur = DB().run("SELECT * FROM comentario WHERE post_idpost = %i" %id)
+        cur = DB().run("SELECT * FROM comentario WHERE post_idpost = %i order by(fecha) desc" %id)
         listaDict = cur.fetchall()
         listaComentarios = []
         for item in listaDict:
