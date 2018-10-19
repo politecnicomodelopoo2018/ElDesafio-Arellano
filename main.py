@@ -84,14 +84,46 @@ def todosLosPosts():
 
 @app.route('/logIn')
 def Login():
+    err = request.args.get("err")
+    if 'err' in request.args:
+        return render_template("/logIn.html", err=err)
     if 'userid' in session:
         return redirect("/")
-    return render_template("/logIn.html")
+    return render_template("/logIn.html", err=0)
+
+
+@app.route('/loginAction', methods=['GET', 'POST'])
+def LoginAction():
+    cur = DB().run("SELECT mail FROM usuario WHERE mail = '{0}'".format(request.form.get("mail")))
+    dict = cur.fetchone()
+    if dict is None:
+        return redirect("/logIn?err=1")
+    usuario = Usuario.getUsuarioDesdeMail(request.form.get("mail"))
+    if hashlib.sha256((request.form.get("contraseña")).encode('utf-8')).hexdigest() == usuario.contraseña:
+        session['userid'] = usuario.id
+    else:
+        return redirect("/logIn?err=2")
+    return redirect("/")
 
 
 @app.route('/signUp')
-def LogIn():
+def signUp():
     return render_template("signUp.html")
+
+
+@app.route('/registrarUsuario', methods=['GET', 'POST'])
+def signUpAction():
+    usuario = Usuario()
+    usuario.setNombre(request.form.get("nombre"))
+    usuario.setMail(request.form.get("mail"))
+    usuario.setFechaCreacion(date.today())
+    usuario.setNickName(request.form.get("nickName"))
+    usuario.setApellido(request.form.get("apellido"))
+    usuario.setContraseña(request.form.get("contraseña"))
+    if request.form.get("mail") == "" or request.form.get("nickName") == "" or len(request.form.get("contraseña")) < 4:
+        return redirect("/")
+    usuario.guardate()
+    return redirect("/")
 
 
 @app.route('/usuarioHilos')
@@ -131,27 +163,10 @@ def CrearPost():
     return render_template("/crearPost.html", listaHilos=Hilo.hilosParaUsuario(usuario.id), usuario=usuario)
 
 
-@app.route('/registrarUsuario', methods=['GET', 'POST'])
-def Registrar():
-    usuario = Usuario()
-    usuario.setNombre(request.form.get("nombre"))
-    usuario.setMail(request.form.get("mail"))
-    usuario.setFechaCreacion(date.today())
-    usuario.setNickName(request.form.get("nickName"))
-    usuario.setApellido(request.form.get("apellido"))
-    usuario.setContraseña(request.form.get("contraseña"))
-    if request.form.get("mail") == "" or request.form.get("nickName") == "" or len(request.form.get("contraseña")) < 4:
-        return redirect("/")
-    usuario.guardate()
-    return redirect("/")
 
 
-@app.route('/loginAction', methods=['GET', 'POST'])
-def LoginAction():
-    usuario = Usuario.getUsuarioDesdeMail(request.form.get("mail"))
-    if hashlib.sha256((request.form.get("contraseña")).encode('utf-8')).hexdigest() == usuario.contraseña:
-        session['userid'] = usuario.id
-    return redirect("/")
+
+
 
 
 @app.route('/logOut')

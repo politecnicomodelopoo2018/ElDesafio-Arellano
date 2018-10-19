@@ -7,10 +7,17 @@
 </head>
 <body>
 LogIn
+{{err}}
 <form action="/loginAction", method="post">
-    <input type="email" name="mail" placeholder="Mail" autocomplete="on"><br>
-    <input type="password" name="contraseña" placeholder="Contraseña"><br>
-    <input type="submit" value="Entrar">
+    <input type="email" name="mail" placeholder="Mail" autocomplete="on">
+    {% if err == 1 %}
+        El mail ingresado no está asociado a ninguna cuenta
+    {% endif %}
+    <br><input type="password" name="contraseña" placeholder="Contraseña">
+    {% if err == 2 %}
+        La contraseña ingresada es incorrecta
+    {% endif %}
+    <br><input type="submit" value="Entrar">
 </form>
 <a href="/cambiarContraseña">¿Olvidaste tu contraseña?</a>
 </body>
