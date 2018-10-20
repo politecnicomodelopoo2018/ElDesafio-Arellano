@@ -84,7 +84,8 @@ def todosLosPosts():
 
 @app.route('/logIn')
 def Login():
-    err = request.args.get("err")
+    #Parece que el problema era que no estaba como int
+    err = int(request.args.get("err"))
     if 'err' in request.args:
         return render_template("/logIn.html", err=err)
     if 'userid' in session:
