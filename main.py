@@ -84,9 +84,7 @@ def todosLosPosts():
 
 @app.route('/logIn')
 def Login():
-    err = request.args.get("err")
-    if 'err' in request.args:
-        return render_template("/logIn.html", err=err)
+
     if 'userid' in session:
         return redirect("/")
     return render_template("/logIn.html", err=0)
